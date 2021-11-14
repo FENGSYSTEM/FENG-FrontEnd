@@ -1,8 +1,137 @@
+@import "./mixins";
+
+@font-face {
+  font-family: feng;
+  src: url(/assets/font/helvetica-neue-regular.ttf) format("truetype");
+}
+@font-face {
+  font-family: feng-bold;
+  src: url(/assets/font/helvetica-neue-medium.ttf) format("truetype");
+}
+@font-face {
+  font-family: feng-italic;
+  src: url(/assets/font/helvetica-neue-light-italic.ttf) format("truetype");
+}
 html,
 body {
   margin: 0;
   padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-family: feng !important;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.font {
+  &-lsp {
+    &--medium {
+      letter-spacing: 3px;
+    }
+  }
+  &-bold {
+    font-family: feng-bold;
+  }
+  &-normal {
+    font-family: feng;
+  }
+  &-italic {
+    font-family: feng-italic;
+  }
+  &-9 {
+    font-size: 9pt;
+  }
+  &-10 {
+    font-size: 10pt;
+  }
+  &-11 {
+    font-size: 11pt;
+  }
+  &-12 {
+    font-size: 12pt;
+  }
+  &-14 {
+    font-size: 14pt;
+  }
+}
+
+.width {
+  &-250 {
+    width: 250px;
+  }
+}
+
+.feng-logo {
+  width: 120px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  .item {
+    font-family: feng-bold;
+    font-size: 16pt;
+    cursor: pointer;
+    margin: 2px 0px;
+  }
+  .sub-item {
+    font-size: 12.5pt;
+    transition: 0.15s ease-in-out;
+    margin: 5px 0px;
+    &:hover {
+      border-bottom: 5px solid #000;
+      cursor: pointer;
+      margin: 5px 0px 15px 0px;
+      // padding: 5px 0px;
+    }
+  }
+}
+
+.filter-item {
+  width: 210px;
+  .title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11pt;
+    font-family: feng-bold;
+    border-bottom: 1px solid #000;
+    padding-bottom: 5px;
+    cursor: pointer;
+    margin-bottom: 8px;
+    padding: 5px 0px;
+  }
+}
+
+.product-item {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+  max-height: 375px;
+  overflow: hidden;
+  &:hover {
+    .product-item-overlay {
+      z-index: 20;
+      opacity: 1;
+    }
+  }
+  &-overlay {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &-status {
+    color: #fff;
+    font-family: feng-bold;
+    font-size: 15pt;
+  }
 }
