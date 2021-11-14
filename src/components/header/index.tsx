@@ -1,6 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import { Input, Radio, Space } from "antd";
-import { Popover, Button } from "antd";
+import { Input, Radio, Space, Badge, Popover, Button } from "antd";
 import {
   SearchOutlined,
   RightOutlined,
@@ -66,7 +65,9 @@ export default function Header({}: Props): ReactElement {
         </Button>
       </Popover>
       <Button className="mx-1 d-flex align-items-center justify-content-center">
-        <ShoppingCartOutlined />
+        <Badge count={0} showZero status="default">
+          <ShoppingCartOutlined />
+        </Badge>
       </Button>
     </div>
   );
