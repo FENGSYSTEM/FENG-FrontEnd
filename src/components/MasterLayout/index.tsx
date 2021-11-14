@@ -31,13 +31,21 @@ export default function MasterLayout({ children }: Props): ReactElement {
               </div>
               {womanExpanded && (
                 <div className="ml-3">
-                  <Link href="/product/woman">
+                  <Link href="/product/woman/new-arrivals">
                     <div className="sub-item">New Arrivals</div>
                   </Link>
-                  <div className="sub-item">Top</div>
-                  <div className="sub-item">Bottom</div>
-                  <div className="sub-item">Coat</div>
-                  <div className="sub-item">Accessories</div>
+                  <Link href="/product/woman/top">
+                    <div className="sub-item">Top</div>
+                  </Link>
+                  <Link href="/product/woman/bottom">
+                    <div className="sub-item">Bottom</div>
+                  </Link>
+                  <Link href="/product/woman/coat">
+                    <div className="sub-item">Coat</div>
+                  </Link>
+                  <Link href="/product/woman/accessories">
+                    <div className="sub-item">Accessories</div>
+                  </Link>
                 </div>
               )}
               <div
