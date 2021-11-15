@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Input, Radio, Space, Badge, Popover, Button } from "antd";
 import {
   SearchOutlined,
@@ -6,12 +6,48 @@ import {
   FilterOutlined,
   ShoppingCartOutlined,
 } from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateCart,
+  updateTotalItems,
+  updateTotalPrice,
+} from "@redux/slices/counter";
 
 interface Props {}
 
 export default function Header({}: Props): ReactElement {
+  const dispatch = useDispatch();
+  const reduxCart = useSelector((state) => state.counter.cart);
+  const totalItemsInCart = useSelector(
+    (state) => state.counter.totalItemsInCart
+  );
+  const totalPriceInCart = useSelector(
+    (state) => state.counter.totalPriceInCart
+  );
   const [categoryRadioState, setCategoryRadioState] = useState<boolean>(true);
-  const content = (
+  useEffect(() => {
+    if (window) {
+      if (localStorage.getItem("cart")) {
+        const cartItems = JSON.parse(localStorage.getItem("cart") as any);
+        dispatch(updateCart(cartItems));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    let sumAmount = Object.values(reduxCart).reduce(
+      (acc, cur: any) => acc + cur.amount,
+      0
+    ) as number;
+    let sumPrice = Object.values(reduxCart).reduce(
+      (acc, cur: any) => acc + cur.price * cur.amount,
+      0
+    ) as number;
+    dispatch(updateTotalItems(sumAmount));
+    dispatch(updateTotalPrice(sumPrice));
+  }, [reduxCart]);
+
+  const filterContent = (
     <div>
       <div className="filter-item">
         <div className="title">
@@ -52,6 +88,36 @@ export default function Header({}: Props): ReactElement {
       </div>
     </div>
   );
+  const cartContent = () => (
+    <div>
+      <div className="font-12 cart-item text-center">
+        Cart ({totalItemsInCart})
+        <hr />
+      </div>
+      <div>
+        {reduxCart.map((obj: any, index) => (
+          <div className="cart-item" key={index}>
+            <div className="font-12 mt-2">{obj.name}</div>
+            <div className="w-100 d-flex align-items-center justify-content-between">
+              <div className="font-10">
+                Color:&nbsp;<span className="font-bold">{obj.color}</span>
+              </div>
+              <div className="font-10">
+                Amount:&nbsp;<span className="font-bold">{obj.amount}</span>
+              </div>
+              <div className="font-10">
+                Size:&nbsp;<span className="font-bold">{obj.size}</span>
+              </div>
+            </div>
+            <hr />
+          </div>
+        ))}
+      </div>
+      <div className="font-12 text-left">
+        Total:&nbsp;<span>${totalPriceInCart}</span>
+      </div>
+    </div>
+  );
   return (
     <div className="w-100 d-flex justify-content-end">
       <Input
@@ -59,15 +125,17 @@ export default function Header({}: Props): ReactElement {
         placeholder="search..."
         prefix={<SearchOutlined />}
       />
-      <Popover placement="bottom" content={content} trigger="click">
+      <Popover placement="bottom" content={filterContent} trigger="click">
         <Button className="mx-1 d-flex align-items-center justify-content-center">
           <FilterOutlined />
         </Button>
       </Popover>
       <Button className="mx-1 d-flex align-items-center justify-content-center">
-        <Badge count={0} showZero status="default">
-          <ShoppingCartOutlined />
-        </Badge>
+        <Popover placement="bottom" content={cartContent} trigger="click">
+          <Badge count={totalItemsInCart} showZero status="default">
+            <ShoppingCartOutlined />
+          </Badge>
+        </Popover>
       </Button>
     </div>
   );

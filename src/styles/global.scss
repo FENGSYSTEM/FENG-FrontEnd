@@ -26,6 +26,9 @@ ul {
     font-size: 12pt;
   }
 }
+.ant-badge-status-default {
+  background: #000 !important;
+}
 .cursor-pointer {
   cursor: pointer;
 }
@@ -110,6 +113,10 @@ ul {
     margin-bottom: 8px;
     padding: 5px 0px;
   }
+}
+
+.cart-item {
+  width: 230px;
 }
 
 .product-item {

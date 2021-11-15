@@ -3,6 +3,8 @@ import { Table, Tag, Space, message } from "antd";
 import SizeChart from "./components/SizeChart";
 import { emitWarning } from "process";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { updateCart } from "@redux/slices/counter";
 
 interface Props {}
 interface ISizeSelector {
@@ -13,7 +15,7 @@ interface IColorSelector {
 }
 export default function index({}: Props): ReactElement {
   const route = useRouter();
-
+  const dispatch = useDispatch();
   const [sizeValue, setSizeValue] = useState<number>();
   const [colorValue, setColorValue] = useState<string>();
   const SizeSelector = ({ size }: ISizeSelector) => {
@@ -43,6 +45,8 @@ export default function index({}: Props): ReactElement {
   const handleAddToCart = () => {
     const selectedProduct = {
       id: route.query.pid,
+      name: "Pant BW",
+      price: 1000,
       size: sizeValue,
       color: colorValue,
       amount: 1,
@@ -64,16 +68,19 @@ export default function index({}: Props): ReactElement {
           amount: existingProduct.amount + 1,
         };
         localStorage.setItem("cart", JSON.stringify(listProductInCart));
+        dispatch(updateCart(listProductInCart));
         message.info("Added to cart");
       } else {
         listProductInCart.push(selectedProduct);
         localStorage.setItem("cart", JSON.stringify(listProductInCart));
+        dispatch(updateCart(listProductInCart));
         message.info("Added to cart");
       }
     } else {
       const listProductInCart = [];
       listProductInCart.push(selectedProduct);
       localStorage.setItem("cart", JSON.stringify(listProductInCart));
+      dispatch(updateCart(listProductInCart));
       message.info("Added to cart");
     }
   };
