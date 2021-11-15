@@ -2,6 +2,8 @@ import React, { ReactElement, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Input, message } from "antd";
 import { updateCart } from "@redux/slices/counter";
+import Link from "next/link";
+// import { RightOutlined } from "@ant-design/icons";
 
 interface Props {}
 
@@ -100,6 +102,11 @@ export default function Index({}: Props): ReactElement {
       <div className="w-100 font-9 text-right my-2 color-gray">
         * Please note that all countries outside the EU may be subject to local
         taxes and duties. These are not included in the final price
+      </div>
+      <div className="w-100 d-flex justify-content-end">
+        <Link href="/order">
+          <div className="feng-button-md my-2">CHECKOUT</div>
+        </Link>
       </div>
     </div>
   );

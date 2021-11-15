@@ -5,6 +5,9 @@
     font-size: 12pt;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     &:hover {
         background: #000;
         color: #fff;

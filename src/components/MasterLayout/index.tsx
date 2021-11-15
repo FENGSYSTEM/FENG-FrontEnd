@@ -10,6 +10,7 @@ interface Props {
 export default function MasterLayout({ children }: Props): ReactElement {
   const [womanExpanded, setWomanExpanded] = useState<boolean>(true);
   const [manExpanded, setManExpanded] = useState<boolean>(false);
+  const [collectionExpanded, setCollectionExpanded] = useState<boolean>(false);
 
   return (
     <div className="container py-5">
@@ -56,15 +57,43 @@ export default function MasterLayout({ children }: Props): ReactElement {
               </div>
               {manExpanded && (
                 <div className="ml-3">
-                  <div className="sub-item">New Arrivals</div>
-                  <div className="sub-item">Top</div>
-                  <div className="sub-item">Bottom</div>
-                  <div className="sub-item">Coat</div>
-                  <div className="sub-item">Accessories</div>
+                  <Link href="/product/woman/new-arrivals">
+                    <div className="sub-item">New Arrivals</div>
+                  </Link>
+                  <Link href="/product/woman/top">
+                    <div className="sub-item">Top</div>
+                  </Link>
+                  <Link href="/product/woman/bottom">
+                    <div className="sub-item">Bottom</div>
+                  </Link>
+                  <Link href="/product/woman/coat">
+                    <div className="sub-item">Coat</div>
+                  </Link>
+                  <Link href="/product/woman/accessories">
+                    <div className="sub-item">Accessories</div>
+                  </Link>
                 </div>
               )}
               <div className="item">About us</div>
-              <div className="item">Collection</div>
+              <div
+                className="item"
+                onClick={() => setCollectionExpanded(!collectionExpanded)}
+              >
+                Collection
+              </div>
+              {collectionExpanded && (
+                <div className="ml-3">
+                  <Link href="/collection/SS2021">
+                    <div className="sub-item">SS2020</div>
+                  </Link>
+                  <Link href="/collection/SS2022">
+                    <div className="sub-item">SS2021</div>
+                  </Link>
+                  <Link href="/collection/SS2023">
+                    <div className="sub-item">SS2022</div>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
           <div className="col-9">
