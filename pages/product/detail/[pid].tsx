@@ -1,6 +1,8 @@
 import React, { ReactElement, useState } from "react";
-import { Table, Tag, Space } from "antd";
+import { Table, Tag, Space, message } from "antd";
 import SizeChart from "./components/SizeChart";
+import { emitWarning } from "process";
+import { useRouter } from "next/router";
 
 interface Props {}
 interface ISizeSelector {
@@ -10,6 +12,8 @@ interface IColorSelector {
   color: string;
 }
 export default function index({}: Props): ReactElement {
+  const route = useRouter();
+
   const [sizeValue, setSizeValue] = useState<number>();
   const [colorValue, setColorValue] = useState<string>();
   const SizeSelector = ({ size }: ISizeSelector) => {
@@ -35,6 +39,43 @@ export default function index({}: Props): ReactElement {
         {color}
       </div>
     );
+  };
+  const handleAddToCart = () => {
+    const selectedProduct = {
+      id: route.query.pid,
+      size: sizeValue,
+      color: colorValue,
+      amount: 1,
+    };
+    console.log(selectedProduct);
+
+    if (localStorage.getItem("cart")) {
+      let listProductInCart = JSON.parse(localStorage.getItem("cart") as any);
+      const existingProductIndex = listProductInCart.findIndex(
+        (e: any) =>
+          e.id === selectedProduct.id &&
+          e.size === selectedProduct.size &&
+          e.color === selectedProduct.color
+      );
+      if (existingProductIndex !== -1) {
+        let existingProduct = listProductInCart[existingProductIndex];
+        listProductInCart[existingProductIndex] = {
+          ...existingProduct,
+          amount: existingProduct.amount + 1,
+        };
+        localStorage.setItem("cart", JSON.stringify(listProductInCart));
+        message.info("Added to cart");
+      } else {
+        listProductInCart.push(selectedProduct);
+        localStorage.setItem("cart", JSON.stringify(listProductInCart));
+        message.info("Added to cart");
+      }
+    } else {
+      const listProductInCart = [];
+      listProductInCart.push(selectedProduct);
+      localStorage.setItem("cart", JSON.stringify(listProductInCart));
+      message.info("Added to cart");
+    }
   };
   return (
     <div className="col-12">
@@ -88,7 +129,12 @@ export default function index({}: Props): ReactElement {
               </div>
             </div>
             <div className="my-4">
-              <div className="feng-button w-100">ADD TO CART</div>
+              <div
+                className="feng-button w-100"
+                onClick={() => handleAddToCart()}
+              >
+                ADD TO CART
+              </div>
             </div>
           </div>
           <br />
@@ -101,3 +147,12 @@ export default function index({}: Props): ReactElement {
     </div>
   );
 }
+// export async function getServerSideProps(context: any) {
+//   console.log(context.query);
+//   const { pid } = context.query;
+//   return {
+//     props: {
+//       pid,
+//     },
+//   };
+// }
