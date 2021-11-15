@@ -33,6 +33,14 @@ ul {
 .cursor-pointer {
   cursor: pointer;
 }
+.min-vh {
+  &-70 {
+    min-height: 70vh;
+  }
+}
+.mt-10 {
+  margin-top: 100px;
+}
 
 .font {
   &-lsp {
@@ -66,6 +74,9 @@ ul {
   }
   &-14 {
     font-size: 14pt;
+  }
+  &-20 {
+    font-size: 20pt;
   }
   &-55 {
     font-size: 55pt;
@@ -201,6 +212,11 @@ ul {
     @include feng-button;
     padding: 5px 10px;
   }
+  &-sm {
+    @include feng-button;
+    padding: 1px 10px;
+    font-size: 9pt !important;
+  }
 }
 
 .order {
@@ -210,4 +226,12 @@ ul {
     padding: 15px;
     height: fit-content;
   }
+}
+
+.marquee-slider {
+  background-color: #ff1b1b;
+  color: #000;
+  padding: 15px 0px;
+  font-size: 12pt;
+  letter-spacing: 5px;
 }

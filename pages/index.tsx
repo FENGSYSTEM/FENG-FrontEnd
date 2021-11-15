@@ -2,7 +2,7 @@ import React from "react";
 
 const Home: React.FC = () => {
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="d-flex flex-column min-vh-800">
       <div className="col-12">
         <div className="row">
           <div className="col-7">

@@ -2,6 +2,7 @@ import React, { ReactElement, useState } from "react";
 import { DatePicker } from "antd";
 import Header from "@components/Header";
 import Link from "next/link";
+import Footer from "@components/Footer";
 
 interface Props {
   children: React.ReactElement;
@@ -16,7 +17,7 @@ export default function MasterLayout({ children }: Props): ReactElement {
     <div className="container py-5">
       <div className="col-12">
         <div className="row">
-          <div className="col-3">
+          <div className="col-3" style={{ borderRight: "1px solid #EBEBEB" }}>
             <Link href="/">
               <img
                 src="/img/logo/feng-logo.png"
@@ -98,10 +99,11 @@ export default function MasterLayout({ children }: Props): ReactElement {
           </div>
           <div className="col-9">
             <Header />
-            <div className="mt-5">{children}</div>
+            <div className="mt-5 min-vh-70">{children}</div>
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
