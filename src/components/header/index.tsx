@@ -12,6 +12,7 @@ import {
   updateTotalItems,
   updateTotalPrice,
 } from "@redux/slices/counter";
+import Link from "next/link";
 
 interface Props {}
 
@@ -36,7 +37,7 @@ export default function Header({}: Props): ReactElement {
 
   useEffect(() => {
     let sumAmount = Object.values(reduxCart).reduce(
-      (acc, cur: any) => acc + cur.amount,
+      (acc: any, cur: any) => parseInt(acc) + parseInt(cur.amount),
       0
     ) as number;
     let sumPrice = Object.values(reduxCart).reduce(
@@ -90,13 +91,13 @@ export default function Header({}: Props): ReactElement {
   );
   const cartContent = () => (
     <div>
-      <div className="font-12 cart-item text-center">
+      <div className="font-12 cart-popup-item text-center">
         Cart ({totalItemsInCart})
         <hr />
       </div>
       <div>
         {reduxCart.map((obj: any, index) => (
-          <div className="cart-item" key={index}>
+          <div className="cart-popup-item" key={index}>
             <div className="font-12 mt-2">{obj.name}</div>
             <div className="w-100 d-flex align-items-center justify-content-between">
               <div className="font-10">
@@ -114,8 +115,11 @@ export default function Header({}: Props): ReactElement {
         ))}
       </div>
       <div className="font-12 text-left">
-        Total:&nbsp;<span>${totalPriceInCart}</span>
+        Total:&nbsp;<span className="font-bold">${totalPriceInCart}</span>
       </div>
+      <Link href="/cart">
+        <div className="feng-button-md my-2">Purchase</div>
+      </Link>
     </div>
   );
   return (

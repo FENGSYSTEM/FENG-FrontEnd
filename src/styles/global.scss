@@ -48,6 +48,9 @@ ul {
   &-italic {
     font-family: feng-italic;
   }
+  &-8 {
+    font-size: 8pt;
+  }
   &-9 {
     font-size: 9pt;
   }
@@ -64,7 +67,14 @@ ul {
     font-size: 14pt;
   }
 }
-
+.color {
+  &-black {
+    color: #000;
+  }
+  &-gray {
+    color: #818181;
+  }
+}
 .width {
   &-250 {
     width: 250px;
@@ -115,8 +125,16 @@ ul {
   }
 }
 
-.cart-item {
-  width: 230px;
+.cart {
+  &-item {
+    height: 80px;
+    &-row {
+      font-size: 11pt;
+    }
+  }
+  &-popup-item {
+    width: 230px;
+  }
 }
 
 .product-item {
@@ -173,15 +191,10 @@ ul {
 }
 
 .feng-button {
-  border: 2px solid #000;
+  @include feng-button;
   padding: 10px 15px;
-  text-align: center;
-  font-family: feng-bold;
-  font-size: 12pt;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  &:hover {
-    background: #000;
-    color: #fff;
+  &-md {
+    @include feng-button;
+    padding: 5px 10px;
   }
 }
