@@ -14,7 +14,7 @@ export default function MasterLayout({ children }: Props): ReactElement {
   const [collectionExpanded, setCollectionExpanded] = useState<boolean>(false);
 
   return (
-    <div className="container py-5">
+    <div className="w-100 py-5">
       <div className="col-12">
         <div className="row">
           <div className="col-3" style={{ borderRight: "1px solid #EBEBEB" }}>

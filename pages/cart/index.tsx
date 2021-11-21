@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Input, message } from "antd";
 import { updateCart } from "@redux/slices/counter";
 import Link from "next/link";
+import { DeleteOutlined } from "@ant-design/icons";
+
 // import { RightOutlined } from "@ant-design/icons";
 
 interface Props {}
@@ -23,7 +25,7 @@ export default function Index({}: Props): ReactElement {
 
     // console.log(reduxCartClone);
     return (
-      <div className="row cart-item" key={index}>
+      <div className="row cart-item">
         <div className="col-3 cart-item-row d-flex align-items-center justify-content-center">
           {obj.id}
         </div>
@@ -31,13 +33,13 @@ export default function Index({}: Props): ReactElement {
           {obj.name} - {obj.size}
         </div>
         <div className="col-3 cart-item-row d-flex align-items-center justify-content-center">
-          <div className="d-flex flex-column align-items-center justify-content-center">
+          <div className="d-flex align-items-center justify-content-center">
             <Input
               value={itemAmountValue}
               type="number"
               className="text-center"
+              key={`recipient_${index}`}
               onChange={(e) => {
-                e.currentTarget.focus();
                 if (parseInt(e.target.value) < 1) {
                   message.info("Minimum amount value reached !");
                 } else {
@@ -59,13 +61,14 @@ export default function Index({}: Props): ReactElement {
                       JSON.stringify(reduxCartClone)
                     );
                     dispatch(updateCart(reduxCartClone));
+
                     // message.info("Cart updated !");
                   }
                 }
               }}
             />
             <div
-              className="font-9 cursor-pointer mt-2"
+              className="font-11 px-2 cursor-pointer"
               onClick={() => {
                 const currentItemIndex = reduxCartClone.findIndex(
                   (e: any) =>
@@ -78,7 +81,7 @@ export default function Index({}: Props): ReactElement {
                 dispatch(updateCart(reduxCartClone));
               }}
             >
-              REMOVE
+              <DeleteOutlined />
             </div>
           </div>
         </div>

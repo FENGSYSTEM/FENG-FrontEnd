@@ -1,7 +1,6 @@
 import React, { ReactElement } from "react";
 import { Input } from "antd";
 import { useSelector } from "react-redux";
-
 interface Props {}
 
 export default function Index({}: Props): ReactElement {
