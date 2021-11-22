@@ -9,9 +9,17 @@ import { DeleteOutlined } from "@ant-design/icons";
 
 interface Props {}
 
-const CartItem = ({ obj, index }: { obj: any; index: number }) => {
+const CartItem = ({
+  obj,
+  index,
+  reduxCart,
+}: {
+  obj: any;
+  index: number;
+  reduxCart: any;
+}) => {
   const dispatch = useDispatch();
-  const reduxCart = useSelector((state) => state.counter.cart);
+  // const reduxCart = useSelector((state) => state.counter.cart);
 
   const [itemAmountValue, setAmountValue] = useState<number>(obj.amount);
   // const [reduxCartClone, setReduxCartClone] = useState<[]>(reduxCart);
@@ -100,7 +108,7 @@ export default function Index({}: Props): ReactElement {
     <div className="w-100">
       <div className="col-12">
         {reduxCart.map((obj: any, index: number) => [
-          <CartItem obj={obj} index={index} />,
+          <CartItem obj={obj} index={index} reduxCart={reduxCart} />,
           <hr />,
         ])}
       </div>
