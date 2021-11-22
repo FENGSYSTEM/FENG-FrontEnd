@@ -1,8 +1,12 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { DatePicker } from "antd";
 import Header from "@components/Header";
 import Link from "next/link";
 import Footer from "@components/Footer";
+import { useDispatch, useSelector } from "react-redux";
+// import { getSubCategory, getSubCategory } from "@redux/slices/api/productSlice";
+import axios from "axios";
+import { API_ENDPOINT } from "src/utils/constant/api";
 
 interface Props {
   children: React.ReactElement;
@@ -12,6 +16,33 @@ export default function MasterLayout({ children }: Props): ReactElement {
   const [womanExpanded, setWomanExpanded] = useState<boolean>(true);
   const [manExpanded, setManExpanded] = useState<boolean>(false);
   const [collectionExpanded, setCollectionExpanded] = useState<boolean>(false);
+  const [listSubCategoryWoman, setlistSubCategoryWoman] = useState<any>();
+  const [listSubCategoryMan, setlistSubCategoryMan] = useState<any>();
+
+  const dispatch = useDispatch();
+
+  const getSubCategory = async () => {
+    const resDataMan = await axios
+      .get(`${API_ENDPOINT}/categories/man`)
+      .then((res) => {
+        // console.log(res.data);
+        setlistSubCategoryMan(res.data);
+        return res.data;
+      });
+    const resDataWoman = await axios
+      .get(`${API_ENDPOINT}/categories/woman`)
+      .then((res) => {
+        // console.log(res.data);
+        setlistSubCategoryWoman(res.data);
+        return res.data;
+      });
+    // console.log(listSubCategoryMan);
+    // console.log(listSubCategoryWoman);
+  };
+
+  useEffect(() => {
+    getSubCategory();
+  }, []);
 
   return (
     <div className="w-100 py-5">
@@ -33,7 +64,14 @@ export default function MasterLayout({ children }: Props): ReactElement {
               </div>
               {womanExpanded && (
                 <div className="ml-3">
-                  <Link href="/product/woman/new-arrivals">
+                  {listSubCategoryWoman?.map((obj: any, index: number) => (
+                    <Link href={`/product/woman/${obj.id}`}>
+                      <div className="sub-item" key={index}>
+                        {obj.name}
+                      </div>
+                    </Link>
+                  ))}
+                  {/* <Link href="/product/woman/new-arrivals">
                     <div className="sub-item">New Arrivals</div>
                   </Link>
                   <Link href="/product/woman/top">
@@ -47,7 +85,7 @@ export default function MasterLayout({ children }: Props): ReactElement {
                   </Link>
                   <Link href="/product/woman/accessories">
                     <div className="sub-item">Accessories</div>
-                  </Link>
+                  </Link> */}
                 </div>
               )}
               <div
@@ -58,21 +96,13 @@ export default function MasterLayout({ children }: Props): ReactElement {
               </div>
               {manExpanded && (
                 <div className="ml-3">
-                  <Link href="/product/woman/new-arrivals">
-                    <div className="sub-item">New Arrivals</div>
-                  </Link>
-                  <Link href="/product/woman/top">
-                    <div className="sub-item">Top</div>
-                  </Link>
-                  <Link href="/product/woman/bottom">
-                    <div className="sub-item">Bottom</div>
-                  </Link>
-                  <Link href="/product/woman/coat">
-                    <div className="sub-item">Coat</div>
-                  </Link>
-                  <Link href="/product/woman/accessories">
-                    <div className="sub-item">Accessories</div>
-                  </Link>
+                  {listSubCategoryMan?.map((obj: any, index: number) => (
+                    <Link href={`/product/man/${obj.id}`}>
+                      <div className="sub-item" key={index}>
+                        {obj.name}
+                      </div>
+                    </Link>
+                  ))}
                 </div>
               )}
               <div className="item">About us</div>
@@ -106,4 +136,23 @@ export default function MasterLayout({ children }: Props): ReactElement {
       <Footer />
     </div>
   );
+}
+
+export async function getServerSideProps(context: any) {
+  console.log(context);
+  const { pid } = context.query;
+  const listSubCategoryMan = await axios.get(`${API_ENDPOINT}/categories/man`);
+  const listSubCategoryWoman = await axios.get(
+    `${API_ENDPOINT}/categories/woman`
+  );
+  console.log(listSubCategoryMan.data);
+  console.log(listSubCategoryWoman.data);
+
+  return {
+    props: {
+      pid,
+      listSubCategoryMan,
+      listSubCategoryWoman,
+    }, // will be passed to the page component as props
+  };
 }
