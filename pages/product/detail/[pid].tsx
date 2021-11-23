@@ -33,39 +33,6 @@ const thumbItems = (
     </div>
   ));
 };
-// const items = [
-//   <div className="item" data-value="1">
-//     1
-//   </div>,
-//   <div className="item" data-value="2">
-//     2
-//   </div>,
-//   <div className="item" data-value="3">
-//     3
-//   </div>,
-//   <div className="item" data-value="4">
-//     4
-//   </div>,
-//   <div className="item" data-value="5">
-//     5
-//   </div>,
-// ];
-// const thumbItems = (
-//   items: any,
-//   [setThumbIndex, setThumbAnimation]: [
-//     setThumbIndex: any,
-//     setThumbAnimation: any
-//   ]
-// ) => {
-//   return items.map((item: any, i: number) => (
-//     <div
-//       className="thumb"
-//       onClick={() => (setThumbIndex(i), setThumbAnimation(true))}
-//     >
-//       {item}
-//     </div>
-//   ));
-// };
 
 export default function index({}: Props): ReactElement {
   const route = useRouter();
@@ -84,6 +51,7 @@ export default function index({}: Props): ReactElement {
   const [thumbs, setThumbs] = useState<any>();
 
   useEffect(() => {
+    console.log(route.query.pid);
     const a = async () => {
       await dispatch(getProductDetail(route.query.pid));
     };
@@ -163,8 +131,8 @@ export default function index({}: Props): ReactElement {
   const handleAddToCart = () => {
     const selectedProduct = {
       id: route.query.pid,
-      name: "Pant BW",
-      price: 1000,
+      name: productDetail?.name,
+      price: productDetail?.price,
       size: sizeValue,
       color: colorValue,
       amount: 1,
@@ -215,7 +183,7 @@ export default function index({}: Props): ReactElement {
   return (
     <div className="col-12">
       <div className="row">
-        <div className="col-5">
+        <div className="col-md-5">
           <AliceCarousel
             activeIndex={mainIndex}
             animationType="fadeout"
@@ -223,7 +191,7 @@ export default function index({}: Props): ReactElement {
             disableDotsControls
             disableButtonsControls
             infinite
-            items={productDetail.images?.map((img: string, index: number) => (
+            items={productDetail?.images?.map((img: string, index: number) => (
               <img src={img} key={`img-detail-${index}`} className="w-100" />
             ))}
             mouseTracking={true}
@@ -231,7 +199,7 @@ export default function index({}: Props): ReactElement {
             onSlideChanged={syncMainAfterChange}
             touchTracking={true}
           />
-          <div className="thumbs">
+          <div className="thumbs w-100">
             <AliceCarousel
               activeIndex={thumbIndex}
               autoWidth
@@ -261,7 +229,7 @@ export default function index({}: Props): ReactElement {
             </div>
           </div> */}
         </div>
-        <div className="col-7">
+        <div className="col-md-7">
           <h4 className="">{productDetail?.name}</h4>
           <h4 className="font-bold">${productDetail?.price}</h4>
           <div className="my-4">
@@ -282,11 +250,16 @@ export default function index({}: Props): ReactElement {
                 <u>SELECT A SIZE</u>
               </h6>
               <div className="d-flex product-detail-size">
-                <SizeSelector size={34} />
+                {productDetail?.productStocks?.map(
+                  (obj: any, index: number) => (
+                    <SizeSelector size={obj.size} key={`key-${index}`} />
+                  )
+                )}
+                {/* <SizeSelector size={34} />
                 <SizeSelector size={36} />
                 <SizeSelector size={38} />
                 <SizeSelector size={40} />
-                <SizeSelector size={42} />
+                <SizeSelector size={42} /> */}
               </div>
             </div>
             <div className="my-3">

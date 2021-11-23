@@ -8,7 +8,7 @@ export const getProductBySubCategory = createAsyncThunk(
     console.log(id);
     const res = await axios.get(`${API_ENDPOINT}/products`, {
       params: {
-        subCategoryId: id,
+        subCategory: id,
       },
     });
     console.log(res.data);

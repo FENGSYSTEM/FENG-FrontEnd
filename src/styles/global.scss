@@ -157,14 +157,21 @@ ul {
 
 .thumb {
   cursor: pointer;
-  width: 200px;
+  // width: 180px;
   height: 100px;
   overflow: hidden;
+
   .item {
     // width: 200px;
-    height: 100px;
+    // height: 100px;
   }
 }
+.thumbs {
+  .alice-carousel__stage-item {
+    width: 25% !important;
+  }
+}
+
 .alice-carousel__prev-btn-item {
   color: #000 !important;
 }

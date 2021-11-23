@@ -48,7 +48,10 @@ export default function MasterLayout({ children }: Props): ReactElement {
     <div className="w-100 py-5">
       <div className="col-12">
         <div className="row">
-          <div className="col-3" style={{ borderRight: "1px solid #EBEBEB" }}>
+          <div
+            className="d-none d-md-block col-md-3"
+            style={{ borderRight: "1px solid #EBEBEB" }}
+          >
             <Link href="/">
               <img
                 src="/img/logo/feng-logo.png"
@@ -65,27 +68,12 @@ export default function MasterLayout({ children }: Props): ReactElement {
               {womanExpanded && (
                 <div className="ml-3">
                   {listSubCategoryWoman?.map((obj: any, index: number) => (
-                    <Link href={`/product/woman/${obj.id}`}>
+                    <Link href={`/product/woman/${obj.url}`}>
                       <div className="sub-item" key={index}>
                         {obj.name}
                       </div>
                     </Link>
                   ))}
-                  {/* <Link href="/product/woman/new-arrivals">
-                    <div className="sub-item">New Arrivals</div>
-                  </Link>
-                  <Link href="/product/woman/top">
-                    <div className="sub-item">Top</div>
-                  </Link>
-                  <Link href="/product/woman/bottom">
-                    <div className="sub-item">Bottom</div>
-                  </Link>
-                  <Link href="/product/woman/coat">
-                    <div className="sub-item">Coat</div>
-                  </Link>
-                  <Link href="/product/woman/accessories">
-                    <div className="sub-item">Accessories</div>
-                  </Link> */}
                 </div>
               )}
               <div
@@ -97,7 +85,7 @@ export default function MasterLayout({ children }: Props): ReactElement {
               {manExpanded && (
                 <div className="ml-3">
                   {listSubCategoryMan?.map((obj: any, index: number) => (
-                    <Link href={`/product/man/${obj.id}`}>
+                    <Link href={`/product/man/${obj.url}`}>
                       <div className="sub-item" key={index}>
                         {obj.name}
                       </div>
@@ -127,7 +115,7 @@ export default function MasterLayout({ children }: Props): ReactElement {
               )}
             </div>
           </div>
-          <div className="col-9">
+          <div className="col-12 col-md-9">
             <Header />
             <div className="mt-5 min-vh-70">{children}</div>
           </div>
