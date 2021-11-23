@@ -57,7 +57,7 @@ export default function Index({}: Props): ReactElement {
           {listProduct.products?.map((obj: any, index: number) => (
             <div className="col-4 px-2 my-2">
               <ProductItem
-                productId="1"
+                productId={obj.id}
                 status={obj.status}
                 imgList={obj.images}
               />

@@ -1,10 +1,13 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { Table, Tag, Space, message } from "antd";
 import SizeChart from "./components/SizeChart";
 import { emitWarning } from "process";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "@redux/slices/counter";
+import { getProductDetail } from "@redux/slices/api/productSlice";
+import AliceCarousel from "react-alice-carousel";
+import "react-alice-carousel/lib/alice-carousel.css";
 
 interface Props {}
 interface ISizeSelector {
@@ -13,11 +16,124 @@ interface ISizeSelector {
 interface IColorSelector {
   color: string;
 }
+
+const thumbItems = (
+  productDetail: any,
+  [setThumbIndex, setThumbAnimation]: [
+    setThumbIndex: any,
+    setThumbAnimation: any
+  ]
+) => {
+  return productDetail.images?.map((img: any, i: number) => (
+    <div
+      className="thumb"
+      onClick={() => (setThumbIndex(i), setThumbAnimation(true))}
+    >
+      <img src={img} key={`img-detail-${i}`} className="w-100" />
+    </div>
+  ));
+};
+// const items = [
+//   <div className="item" data-value="1">
+//     1
+//   </div>,
+//   <div className="item" data-value="2">
+//     2
+//   </div>,
+//   <div className="item" data-value="3">
+//     3
+//   </div>,
+//   <div className="item" data-value="4">
+//     4
+//   </div>,
+//   <div className="item" data-value="5">
+//     5
+//   </div>,
+// ];
+// const thumbItems = (
+//   items: any,
+//   [setThumbIndex, setThumbAnimation]: [
+//     setThumbIndex: any,
+//     setThumbAnimation: any
+//   ]
+// ) => {
+//   return items.map((item: any, i: number) => (
+//     <div
+//       className="thumb"
+//       onClick={() => (setThumbIndex(i), setThumbAnimation(true))}
+//     >
+//       {item}
+//     </div>
+//   ));
+// };
+
 export default function index({}: Props): ReactElement {
   const route = useRouter();
   const dispatch = useDispatch();
   const [sizeValue, setSizeValue] = useState<number>();
   const [colorValue, setColorValue] = useState<string>();
+
+  const productDetail = useSelector(
+    (state) => state.product.productDetail
+  ) as any;
+
+  const [mainIndex, setMainIndex] = useState(0);
+  const [mainAnimation, setMainAnimation] = useState(false);
+  const [thumbIndex, setThumbIndex] = useState(0);
+  const [thumbAnimation, setThumbAnimation] = useState(false);
+  const [thumbs, setThumbs] = useState<any>();
+
+  useEffect(() => {
+    const a = async () => {
+      await dispatch(getProductDetail(route.query.pid));
+    };
+    a();
+  }, [route.query]);
+
+  useEffect(() => {
+    setThumbs(thumbItems(productDetail, [setThumbIndex, setThumbAnimation]));
+  }, [dispatch, productDetail]);
+
+  const slideNext = () => {
+    console.log("next");
+    if (!thumbAnimation && thumbIndex < thumbs.length - 1) {
+      setThumbAnimation(true);
+      setThumbIndex(thumbIndex + 1);
+    }
+  };
+
+  const slidePrev = () => {
+    console.log("prev");
+    if (!thumbAnimation && thumbIndex > 0) {
+      setThumbAnimation(true);
+      setThumbIndex(thumbIndex - 1);
+    }
+  };
+
+  const syncMainBeforeChange = (e: any) => {
+    setMainAnimation(true);
+  };
+
+  const syncMainAfterChange = (e: any) => {
+    setMainAnimation(false);
+
+    if (e.type === "action") {
+      setThumbIndex(e.item);
+      setThumbAnimation(false);
+    } else {
+      setMainIndex(thumbIndex);
+    }
+  };
+
+  const syncThumbs = (e: any) => {
+    setThumbIndex(e.item);
+    setThumbAnimation(false);
+
+    if (!mainAnimation) {
+      setMainIndex(e.item);
+    }
+  };
+
   const SizeSelector = ({ size }: ISizeSelector) => {
     return (
       <div
@@ -30,6 +146,7 @@ export default function index({}: Props): ReactElement {
       </div>
     );
   };
+
   const ColorSelector = ({ color }: IColorSelector) => {
     return (
       <div
@@ -42,6 +159,7 @@ export default function index({}: Props): ReactElement {
       </div>
     );
   };
+
   const handleAddToCart = () => {
     const selectedProduct = {
       id: route.query.pid,
@@ -84,11 +202,55 @@ export default function index({}: Props): ReactElement {
       message.info("Added to cart");
     }
   };
+
+  // const thumbsResponsive = {
+  //   300: {
+  //     items: 5,
+  //   },
+  //   500: {
+  //     items: 5,
+  //   },
+  // };
+
   return (
     <div className="col-12">
       <div className="row">
         <div className="col-5">
-          <img src="/img/shop/pant-black.jpeg" className="w-100" />
+          <AliceCarousel
+            activeIndex={mainIndex}
+            animationType="fadeout"
+            animationDuration={800}
+            disableDotsControls
+            disableButtonsControls
+            infinite
+            items={productDetail.images?.map((img: string, index: number) => (
+              <img src={img} key={`img-detail-${index}`} className="w-100" />
+            ))}
+            mouseTracking={true}
+            onSlideChange={syncMainBeforeChange}
+            onSlideChanged={syncMainAfterChange}
+            touchTracking={true}
+          />
+          <div className="thumbs">
+            <AliceCarousel
+              activeIndex={thumbIndex}
+              autoWidth
+              disableDotsControls
+              // disableButtonsControls
+              items={thumbs}
+              mouseTracking={true}
+              onSlideChanged={syncThumbs}
+              touchTracking={true}
+              // responsive={thumbsResponsive}
+            />
+            {/* <div className="btn-prev" onClick={slidePrev}>
+              &lang;
+            </div>
+            <div className="btn-next" onClick={slideNext}>
+              &rang;
+            </div> */}
+          </div>
+          {/* <img src="/img/shop/pant-black.jpeg" className="w-100" />
           <div className="col-12 px-0 py-2">
             <div className="row px-0">
               {[1, 2, 3, 4, 5, 6].map((obj, index) => (
@@ -97,13 +259,14 @@ export default function index({}: Props): ReactElement {
                 </div>
               ))}
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="col-7">
-          <h4 className="">SIGNATURE BELTED TAILORED PANT</h4>
-          <h4 className="font-bold">$1000</h4>
+          <h4 className="">{productDetail?.name}</h4>
+          <h4 className="font-bold">${productDetail?.price}</h4>
           <div className="my-4">
-            <ul>
+            {productDetail?.description}
+            {/* <ul>
               <li>Designer color: black</li>
               <li>Styled at natural waist or at high waist</li>
               <li>Self-belt with D-ring</li>
@@ -111,7 +274,7 @@ export default function index({}: Props): ReactElement {
               <li>Crease stitched at the front and back</li>
               <li>60% Virgin wool/ 40% Viscose</li>
               <li>Made in Italy</li>
-            </ul>
+            </ul> */}
           </div>
           <div className="my-3">
             <div className="my-3">

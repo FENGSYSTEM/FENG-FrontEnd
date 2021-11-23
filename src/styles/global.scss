@@ -155,6 +155,22 @@ ul {
   }
 }
 
+.thumb {
+  cursor: pointer;
+  width: 200px;
+  height: 100px;
+  overflow: hidden;
+  .item {
+    // width: 200px;
+    height: 100px;
+  }
+}
+.alice-carousel__prev-btn-item {
+  color: #000 !important;
+}
+.alice-carousel__next-btn-item {
+  color: #000 !important;
+}
 .product-item {
   position: relative;
   cursor: pointer;
