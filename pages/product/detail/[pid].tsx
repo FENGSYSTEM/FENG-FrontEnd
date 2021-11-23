@@ -8,6 +8,8 @@ import { updateCart } from "@redux/slices/counter";
 import { getProductDetail } from "@redux/slices/api/productSlice";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
+import { JSDOM } from "jsdom";
+import createDOMPurify from "dompurify";
 
 interface Props {}
 interface ISizeSelector {
@@ -37,6 +39,19 @@ const thumbItems = (
 export default function index({}: Props): ReactElement {
   const route = useRouter();
   const dispatch = useDispatch();
+
+  // const windowJSDom = new JSDOM("").window as any;
+  // const DOMPurify = createDOMPurify(windowJSDom);
+  const [DOMPurify, setDOMPurify] = useState<any>();
+  const [wd, setWd] = useState<any>();
+
+  useEffect(() => {
+    if (window) {
+      setWd(window);
+      setDOMPurify(createDOMPurify(window));
+    }
+  }, []);
+
   const [sizeValue, setSizeValue] = useState<number>();
   const [colorValue, setColorValue] = useState<string>();
 
@@ -115,12 +130,37 @@ export default function index({}: Props): ReactElement {
     );
   };
 
+  function c_hex_is_light(color: string) {
+    const hex = color.replace("#", "");
+    const c_r = parseInt(hex.substr(0, 2), 16);
+    const c_g = parseInt(hex.substr(2, 2), 16);
+    const c_b = parseInt(hex.substr(4, 2), 16);
+    const brightness = (c_r * 299 + c_g * 587 + c_b * 114) / 1000;
+    return brightness > 155;
+  }
   const ColorSelector = ({ color }: IColorSelector) => {
+    const [hover, setHover] = useState<boolean>(false);
     return (
       <div
-        className={`product-detail-selector-item ${
-          colorValue === color && "active"
-        }`}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        className={`product-detail-selector-item`}
+        style={{
+          backgroundColor: hover
+            ? color
+            : colorValue === color
+            ? color
+            : "#ffffff",
+          color: hover
+            ? c_hex_is_light(color)
+              ? "#000000"
+              : "#ffffff"
+            : colorValue === color
+            ? c_hex_is_light(color)
+              ? "#000000"
+              : "#ffffff"
+            : "#000000",
+        }}
         onClick={() => setColorValue(color)}
       >
         {color}
@@ -180,6 +220,8 @@ export default function index({}: Props): ReactElement {
   //   },
   // };
 
+  const DescriptionHTML = productDetail?.description;
+
   return (
     <div className="col-12">
       <div className="row">
@@ -233,7 +275,13 @@ export default function index({}: Props): ReactElement {
           <h4 className="">{productDetail?.name}</h4>
           <h4 className="font-bold">${productDetail?.price}</h4>
           <div className="my-4">
-            {productDetail?.description}
+            {wd && (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(DescriptionHTML),
+                }}
+              />
+            )}
             {/* <ul>
               <li>Designer color: black</li>
               <li>Styled at natural waist or at high waist</li>
@@ -267,8 +315,11 @@ export default function index({}: Props): ReactElement {
                 <u>SELECT A COLOR</u>
               </h6>
               <div className="d-flex product-detail-size">
-                <ColorSelector color="BLACK" />
-                <ColorSelector color="WHITE" />
+                {productDetail?.color?.map((color: string, index: number) => (
+                  <ColorSelector color={color} />
+                ))}
+                {/* <ColorSelector color="BLACK" />
+                <ColorSelector color="WHITE" /> */}
               </div>
             </div>
             <div className="my-4">
