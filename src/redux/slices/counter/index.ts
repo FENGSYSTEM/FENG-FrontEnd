@@ -32,18 +32,18 @@ const counterSlice = createSlice({
     // updateTotalPrice: (state, { payload }) => {
     //   state.totalPriceInCart = payload;
     // },
-    // increase: (state) => {
-    //   state.count++;
-    // },
-    // decrease: (state) => {
-    //   state.count--;
-    // },
+    increase: (state) => {
+      state.count++;
+    },
+    decrease: (state) => {
+      state.count--;
+    },
   },
 });
 
 export const {
-  // increase,
-  // decrease,
+  increase,
+  decrease,
   // updateCart,
   // emptyCart,
   // updateTotalItems,
