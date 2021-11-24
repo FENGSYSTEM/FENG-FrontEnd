@@ -1,9 +1,10 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Input, message } from "antd";
-import { updateCart } from "@redux/slices/counter";
+import { updateCart } from "@redux/slices/api/orderSlice";
 import Link from "next/link";
 import { DeleteOutlined } from "@ant-design/icons";
+import { apiGetProductDetail } from "src/api/product";
 
 // import { RightOutlined } from "@ant-design/icons";
 
@@ -19,7 +20,7 @@ const CartItem = ({
   reduxCart: any;
 }) => {
   const dispatch = useDispatch();
-  // const reduxCart = useSelector((state) => state.counter.cart);
+  // const reduxCart = useSelector((state) => state.order.cart);
 
   const [itemAmountValue, setAmountValue] = useState<number>(obj.amount);
   // const [reduxCartClone, setReduxCartClone] = useState<[]>(reduxCart);
@@ -28,11 +29,22 @@ const CartItem = ({
   // useEffect(() => {
   //   console.log("abc");
   // }, [dispatch]);
+  const [productDetail, setProductDetail] = useState<any>();
+
+  useEffect(() => {
+    async function initProductDetail() {
+      const data = await apiGetProductDetail(obj.id);
+      setProductDetail(data);
+    }
+    initProductDetail();
+  }, []);
 
   return (
     <div className="row cart-item">
       <div className="col-3 cart-item-row d-flex align-items-center justify-content-center">
-        {obj.id}
+        <div className="">
+          <img src={productDetail?.images[0]} height="80px" />
+        </div>
       </div>
       <div className="col-3 cart-item-row d-flex align-items-center justify-content-center">
         {obj.name} - {obj.size}
@@ -70,39 +82,33 @@ const CartItem = ({
               }
             }}
           />
-          <div
-            className="font-11 px-2 cursor-pointer"
-            onClick={() => {
-              const currentItemIndex = reduxCartClone.findIndex(
-                (e: any) =>
-                  e.id === obj.id &&
-                  e.size === obj.size &&
-                  e.color === obj.color
-              );
-              reduxCartClone.splice(currentItemIndex, 1);
-              localStorage.setItem("cart", JSON.stringify(reduxCartClone));
-              dispatch(updateCart(reduxCartClone));
-            }}
-          >
-            <DeleteOutlined />
-          </div>
         </div>
       </div>
       <div className="col-3 cart-item-row d-flex align-items-center justify-content-center">
-        ${obj.price}
+        <div>${obj.price}</div>
+        <div
+          className="font-11 px-2 pb-2 cursor-pointer"
+          onClick={() => {
+            const currentItemIndex = reduxCartClone.findIndex(
+              (e: any) =>
+                e.id === obj.id && e.size === obj.size && e.color === obj.color
+            );
+            reduxCartClone.splice(currentItemIndex, 1);
+            localStorage.setItem("cart", JSON.stringify(reduxCartClone));
+            dispatch(updateCart(reduxCartClone));
+          }}
+        >
+          <DeleteOutlined />
+        </div>
       </div>
     </div>
   );
 };
 
 export default function Index({}: Props): ReactElement {
-  const reduxCart = useSelector((state) => state.counter.cart);
-  const totalItemsInCart = useSelector(
-    (state) => state.counter.totalItemsInCart
-  );
-  const totalPriceInCart = useSelector(
-    (state) => state.counter.totalPriceInCart
-  );
+  const reduxCart = useSelector((state) => state.order.cart);
+  const totalItemsInCart = useSelector((state) => state.order.totalItemsInCart);
+  const totalPriceInCart = useSelector((state) => state.order.totalPriceInCart);
 
   return (
     <div className="w-100">

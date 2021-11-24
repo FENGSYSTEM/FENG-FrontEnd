@@ -11,20 +11,16 @@ import {
   updateCart,
   updateTotalItems,
   updateTotalPrice,
-} from "@redux/slices/counter";
+} from "@redux/slices/api/orderSlice";
 import Link from "next/link";
 
 interface Props {}
 
 export default function Header({}: Props): ReactElement {
   const dispatch = useDispatch();
-  const reduxCart = useSelector((state) => state.counter.cart);
-  const totalItemsInCart = useSelector(
-    (state) => state.counter.totalItemsInCart
-  );
-  const totalPriceInCart = useSelector(
-    (state) => state.counter.totalPriceInCart
-  );
+  const reduxCart = useSelector((state) => state.order.cart);
+  const totalItemsInCart = useSelector((state) => state.order.totalItemsInCart);
+  const totalPriceInCart = useSelector((state) => state.order.totalPriceInCart);
   const [categoryRadioState, setCategoryRadioState] = useState<boolean>(true);
   useEffect(() => {
     if (window) {

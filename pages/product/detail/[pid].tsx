@@ -4,7 +4,7 @@ import SizeChart from "./components/SizeChart";
 import { emitWarning } from "process";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCart } from "@redux/slices/counter";
+import { updateCart } from "@redux/slices/api/orderSlice";
 import { getProductDetail } from "@redux/slices/api/productSlice";
 // import AliceCarousel from "react-alice-carousel";
 // import "react-alice-carousel/lib/alice-carousel.css";
