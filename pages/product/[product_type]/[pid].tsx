@@ -40,11 +40,13 @@ export default function Index({}: Props): ReactElement {
             </div>
             <img src={item.imgList[0]} className="w-100 product-img-1" />
             <img src={item.imgList[1]} className="w-100 product-img-2" />
+            <img src={item.imgList[0]} className="w-100" />
           </div>
         ) : (
           <div className="product-item">
             <img src={item.imgList[0]} className="w-100 product-img-1" />
             <img src={item.imgList[1]} className="w-100 product-img-2" />
+            <img src={item.imgList[0]} className="w-100" />
           </div>
         )}
       </Link>
@@ -55,7 +57,7 @@ export default function Index({}: Props): ReactElement {
       <div className="col-12">
         <div className="row">
           {listProduct.products?.map((obj: any, index: number) => (
-            <div className="col-4 px-2 my-2">
+            <div className="col-6 col-md-4 px-2 my-2">
               <ProductItem
                 productId={obj.id}
                 status={obj.status}

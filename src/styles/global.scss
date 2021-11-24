@@ -166,6 +166,11 @@ ul {
     // height: 100px;
   }
 }
+.image-gallery-thumbnail.active,
+.image-gallery-thumbnail:focus,
+.image-gallery-thumbnail:hover {
+  border: 3px solid #000000 !important;
+}
 .thumbs {
   .alice-carousel__stage-item {
     width: 25% !important;
@@ -183,15 +188,18 @@ ul {
   cursor: pointer;
 
   width: 100%;
-  height: 375px;
+  // height: 375px;
+
   overflow: hidden;
 
   &:hover {
     .product-img-1 {
-      z-index: 2;
+      z-index: 1;
+      opacity: 0;
     }
     .product-img-2 {
-      z-index: 1;
+      opacity: 1;
+      z-index: 2;
     }
     .product-item-overlay {
       z-index: 20;
@@ -199,11 +207,12 @@ ul {
     }
   }
   .product-img-1 {
-    z-index: 1;
+    z-index: 2;
     position: absolute;
   }
   .product-img-2 {
-    z-index: 2;
+    opacity: 0;
+    z-index: 1;
     position: absolute;
   }
 

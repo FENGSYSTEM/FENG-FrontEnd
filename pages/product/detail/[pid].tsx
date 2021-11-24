@@ -6,8 +6,10 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCart } from "@redux/slices/counter";
 import { getProductDetail } from "@redux/slices/api/productSlice";
-import AliceCarousel from "react-alice-carousel";
-import "react-alice-carousel/lib/alice-carousel.css";
+// import AliceCarousel from "react-alice-carousel";
+// import "react-alice-carousel/lib/alice-carousel.css";
+import "react-image-gallery/styles/css/image-gallery.css";
+import ImageGallery from "react-image-gallery";
 import { JSDOM } from "jsdom";
 import createDOMPurify from "dompurify";
 
@@ -19,22 +21,22 @@ interface IColorSelector {
   color: string;
 }
 
-const thumbItems = (
-  productDetail: any,
-  [setThumbIndex, setThumbAnimation]: [
-    setThumbIndex: any,
-    setThumbAnimation: any
-  ]
-) => {
-  return productDetail.images?.map((img: any, i: number) => (
-    <div
-      className="thumb"
-      onClick={() => (setThumbIndex(i), setThumbAnimation(true))}
-    >
-      <img src={img} key={`img-detail-${i}`} className="w-100" />
-    </div>
-  ));
-};
+// const thumbItems = (
+//   productDetail: any,
+//   [setThumbIndex, setThumbAnimation]: [
+//     setThumbIndex: any,
+//     setThumbAnimation: any
+//   ]
+// ) => {
+//   return productDetail.images?.map((img: any, i: number) => (
+//     <div
+//       className="thumb"
+//       onClick={() => (setThumbIndex(i), setThumbAnimation(true))}
+//     >
+//       <img src={img} key={`img-detail-${i}`} className="w-100" />
+//     </div>
+//   ));
+// };
 
 export default function index({}: Props): ReactElement {
   const route = useRouter();
@@ -59,10 +61,10 @@ export default function index({}: Props): ReactElement {
     (state) => state.product.productDetail
   ) as any;
 
-  const [mainIndex, setMainIndex] = useState(0);
-  const [mainAnimation, setMainAnimation] = useState(false);
-  const [thumbIndex, setThumbIndex] = useState(0);
-  const [thumbAnimation, setThumbAnimation] = useState(false);
+  // const [mainIndex, setMainIndex] = useState(0);
+  // const [mainAnimation, setMainAnimation] = useState(false);
+  // const [thumbIndex, setThumbIndex] = useState(0);
+  // const [thumbAnimation, setThumbAnimation] = useState(false);
   const [thumbs, setThumbs] = useState<any>();
 
   useEffect(() => {
@@ -74,48 +76,32 @@ export default function index({}: Props): ReactElement {
   }, [route.query]);
 
   useEffect(() => {
-    setThumbs(thumbItems(productDetail, [setThumbIndex, setThumbAnimation]));
+    // setThumbs(thumbItems(productDetail, [setThumbIndex, setThumbAnimation]));
   }, [dispatch, productDetail]);
 
-  const slideNext = () => {
-    console.log("next");
-    if (!thumbAnimation && thumbIndex < thumbs.length - 1) {
-      setThumbAnimation(true);
-      setThumbIndex(thumbIndex + 1);
-    }
-  };
+  // const syncMainBeforeChange = (e: any) => {
+  //   setMainAnimation(true);
+  // };
 
-  const slidePrev = () => {
-    console.log("prev");
-    if (!thumbAnimation && thumbIndex > 0) {
-      setThumbAnimation(true);
-      setThumbIndex(thumbIndex - 1);
-    }
-  };
+  // const syncMainAfterChange = (e: any) => {
+  //   setMainAnimation(false);
 
-  const syncMainBeforeChange = (e: any) => {
-    setMainAnimation(true);
-  };
+  //   if (e.type === "action") {
+  //     setThumbIndex(e.item);
+  //     setThumbAnimation(false);
+  //   } else {
+  //     setMainIndex(thumbIndex);
+  //   }
+  // };
 
-  const syncMainAfterChange = (e: any) => {
-    setMainAnimation(false);
+  // const syncThumbs = (e: any) => {
+  //   setThumbIndex(e.item);
+  //   setThumbAnimation(false);
 
-    if (e.type === "action") {
-      setThumbIndex(e.item);
-      setThumbAnimation(false);
-    } else {
-      setMainIndex(thumbIndex);
-    }
-  };
-
-  const syncThumbs = (e: any) => {
-    setThumbIndex(e.item);
-    setThumbAnimation(false);
-
-    if (!mainAnimation) {
-      setMainIndex(e.item);
-    }
-  };
+  //   if (!mainAnimation) {
+  //     setMainIndex(e.item);
+  //   }
+  // };
 
   const SizeSelector = ({ size }: ISizeSelector) => {
     return (
@@ -221,12 +207,32 @@ export default function index({}: Props): ReactElement {
   // };
 
   const DescriptionHTML = productDetail?.description;
-
+  console.log(
+    productDetail?.images?.map((url: string, index: number) => ({
+      original: url,
+      thumbnail: url,
+    }))
+  );
   return (
     <div className="col-12">
       <div className="row">
         <div className="col-md-5">
-          <AliceCarousel
+          {productDetail?.images && (
+            <ImageGallery
+              showNav={false}
+              showPlayButton={false}
+              showFullscreenButton={false}
+              items={productDetail?.images?.map(
+                (url: string, index: number) => ({
+                  original: url,
+                  thumbnail: url,
+                  originalWidth: "100%",
+                })
+              )}
+            />
+          )}
+
+          {/* <AliceCarousel
             activeIndex={mainIndex}
             animationType="fadeout"
             animationDuration={800}
@@ -236,10 +242,10 @@ export default function index({}: Props): ReactElement {
             items={productDetail?.images?.map((img: string, index: number) => (
               <img src={img} key={`img-detail-${index}`} className="w-100" />
             ))}
-            mouseTracking={true}
+            mouseTracking={!thumbAnimation}
             onSlideChange={syncMainBeforeChange}
             onSlideChanged={syncMainAfterChange}
-            touchTracking={true}
+            touchTracking={!thumbAnimation}
           />
           <div className="thumbs w-100">
             <AliceCarousel
@@ -248,18 +254,13 @@ export default function index({}: Props): ReactElement {
               disableDotsControls
               // disableButtonsControls
               items={thumbs}
-              mouseTracking={true}
               onSlideChanged={syncThumbs}
-              touchTracking={true}
+              mouseTracking={false}
+              touchTracking={!mainAnimation}
               // responsive={thumbsResponsive}
             />
-            {/* <div className="btn-prev" onClick={slidePrev}>
-              &lang;
-            </div>
-            <div className="btn-next" onClick={slideNext}>
-              &rang;
-            </div> */}
-          </div>
+           
+          </div> */}
           {/* <img src="/img/shop/pant-black.jpeg" className="w-100" />
           <div className="col-12 px-0 py-2">
             <div className="row px-0">
