@@ -36,7 +36,7 @@ export default function Index({}: Props): ReactElement {
     <div className="w-100">
       <div className="col-12">
         <div className="row">
-          <div className="col-8">
+          <div className="col-md-8">
             <div className=" order-palete shadow-md">
               <h5>Contact information</h5>
               <Input
@@ -59,7 +59,7 @@ export default function Index({}: Props): ReactElement {
               />
             </div>
           </div>
-          <div className="col-4">
+          <div className="col-md-4 my-3 my-md-0">
             {reduxCart.map((obj: any, index) => (
               <div className="w-100" key={index}>
                 <div className="font-12 mt-2 d-flex justify-content-between align-items-center my-1">

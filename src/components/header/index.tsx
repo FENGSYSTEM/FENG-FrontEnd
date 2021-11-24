@@ -1,10 +1,11 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import { Input, Radio, Space, Badge, Popover, Button } from "antd";
+import { Input, Radio, Space, Badge, Popover, Button, Drawer } from "antd";
 import {
   SearchOutlined,
   RightOutlined,
   FilterOutlined,
   ShoppingCartOutlined,
+  UnorderedListOutlined,
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -13,6 +14,7 @@ import {
   updateTotalPrice,
 } from "@redux/slices/api/orderSlice";
 import Link from "next/link";
+import FengMenu from "@components/Menu";
 
 interface Props {}
 
@@ -22,6 +24,15 @@ export default function Header({}: Props): ReactElement {
   const totalItemsInCart = useSelector((state) => state.order.totalItemsInCart);
   const totalPriceInCart = useSelector((state) => state.order.totalPriceInCart);
   const [categoryRadioState, setCategoryRadioState] = useState<boolean>(true);
+
+  const [visible, setVisible] = useState(false);
+  const showDrawer = () => {
+    setVisible(true);
+  };
+  const onClose = () => {
+    setVisible(false);
+  };
+
   useEffect(() => {
     if (window) {
       if (localStorage.getItem("cart")) {
@@ -120,7 +131,14 @@ export default function Header({}: Props): ReactElement {
   );
   return (
     <div className="w-100 d-flex justify-content-end">
+      <Button
+        className="d-block d-md-none mx-1 d-flex align-items-center justify-content-center"
+        onClick={() => setVisible(!visible)}
+      >
+        <UnorderedListOutlined />
+      </Button>
       <Input
+        size="small"
         className="w-50 mx-1"
         placeholder="search..."
         prefix={<SearchOutlined />}
@@ -137,6 +155,14 @@ export default function Header({}: Props): ReactElement {
           </Badge>
         </Popover>
       </Button>
+      <Drawer
+        title={() => <h1 className="font-bold cursor-pointer">FENG</h1>}
+        placement="right"
+        onClose={onClose}
+        visible={visible}
+      >
+        <FengMenu />
+      </Drawer>
     </div>
   );
 }

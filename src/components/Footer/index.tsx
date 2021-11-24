@@ -20,7 +20,7 @@ export default function Footer({}: Props): ReactElement {
         <hr />
         <div className="col-12">
           <div className="row">
-            <div className="col-6 px-0">
+            <div className="col-md-6 px-0">
               <div className="d-flex align-items-center justify-content-start">
                 <Input
                   size="small"
@@ -30,8 +30,8 @@ export default function Footer({}: Props): ReactElement {
                 <div className="feng-button-sm mx-2">SUBCRIBE</div>
               </div>
             </div>
-            <div className="col-6 px-0">
-              <div className="d-flex align-items-center justify-content-end">
+            <div className="col-md-6 px-0">
+              <div className="d-flex flex-md-row flex-column m-md-0 my-3 align-items-start align-items-md-center justify-content-end">
                 <div className="mx-2 cursor-pointer">CONTACT</div>
                 <div className="mx-2 cursor-pointer">PRESS</div>
                 <div className="mx-2 cursor-pointer">STOCKISTS</div>
