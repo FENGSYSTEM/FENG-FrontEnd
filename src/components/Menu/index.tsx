@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { getSubCategory, getSubCategory } from "@redux/slices/api/productSlice";
 import axios from "axios";
 import { API_ENDPOINT } from "src/utils/constant/api";
+import { setOpenDrawer } from "@redux/slices/counter";
 
 interface Props {}
 
@@ -58,7 +59,11 @@ export default function FengMenu({}: Props): ReactElement {
           <div className="ml-3">
             {listSubCategoryWoman?.map((obj: any, index: number) => (
               <Link href={`/product/woman/${obj.url}`}>
-                <div className="sub-item" key={index}>
+                <div
+                  className="sub-item"
+                  key={index}
+                  onClick={() => dispatch(setOpenDrawer(false))}
+                >
                   {obj.name}
                 </div>
               </Link>
@@ -72,7 +77,11 @@ export default function FengMenu({}: Props): ReactElement {
           <div className="ml-3">
             {listSubCategoryMan?.map((obj: any, index: number) => (
               <Link href={`/product/man/${obj.url}`}>
-                <div className="sub-item" key={index}>
+                <div
+                  className="sub-item"
+                  key={index}
+                  onClick={() => dispatch(setOpenDrawer(false))}
+                >
                   {obj.name}
                 </div>
               </Link>

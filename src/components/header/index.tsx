@@ -15,23 +15,25 @@ import {
 } from "@redux/slices/api/orderSlice";
 import Link from "next/link";
 import FengMenu from "@components/Menu";
+import { setOpenDrawer } from "@redux/slices/counter";
 
 interface Props {}
 
 export default function Header({}: Props): ReactElement {
   const dispatch = useDispatch();
   const reduxCart = useSelector((state) => state.order.cart);
+  const openDrawer = useSelector((state) => state.counter.openDrawer);
   const totalItemsInCart = useSelector((state) => state.order.totalItemsInCart);
   const totalPriceInCart = useSelector((state) => state.order.totalPriceInCart);
   const [categoryRadioState, setCategoryRadioState] = useState<boolean>(true);
 
-  const [visible, setVisible] = useState(false);
-  const showDrawer = () => {
-    setVisible(true);
-  };
-  const onClose = () => {
-    setVisible(false);
-  };
+  // const [visible, setVisible] = useState(false);
+  // const showDrawer = () => {
+  //   setVisible(true);
+  // };
+  // const onClose = () => {
+  //   setVisible(false);
+  // };
 
   useEffect(() => {
     if (window) {
@@ -133,7 +135,7 @@ export default function Header({}: Props): ReactElement {
     <div className="w-100 d-flex justify-content-end">
       <Button
         className="d-block d-md-none mx-1 d-flex align-items-center justify-content-center"
-        onClick={() => setVisible(!visible)}
+        onClick={() => dispatch(setOpenDrawer(!openDrawer))}
       >
         <UnorderedListOutlined />
       </Button>
@@ -158,8 +160,8 @@ export default function Header({}: Props): ReactElement {
       <Drawer
         title={() => <h1 className="font-bold cursor-pointer">FENG</h1>}
         placement="right"
-        onClose={onClose}
-        visible={visible}
+        onClose={() => dispatch(setOpenDrawer(false))}
+        visible={openDrawer}
       >
         <FengMenu />
       </Drawer>

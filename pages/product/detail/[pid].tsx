@@ -155,45 +155,55 @@ export default function index({}: Props): ReactElement {
   };
 
   const handleAddToCart = () => {
-    const selectedProduct = {
-      id: route.query.pid,
-      name: productDetail?.name,
-      price: productDetail?.price,
-      size: sizeValue,
-      color: colorValue,
-      amount: 1,
-    };
-    console.log(selectedProduct);
-
-    if (localStorage.getItem("cart")) {
-      let listProductInCart = JSON.parse(localStorage.getItem("cart") as any);
-      const existingProductIndex = listProductInCart.findIndex(
-        (e: any) =>
-          e.id === selectedProduct.id &&
-          e.size === selectedProduct.size &&
-          e.color === selectedProduct.color
-      );
-      if (existingProductIndex !== -1) {
-        let existingProduct = listProductInCart[existingProductIndex];
-        listProductInCart[existingProductIndex] = {
-          ...existingProduct,
-          amount: existingProduct.amount + 1,
+    if (productDetail?.status === "IN_STOCK") {
+      if (sizeValue && colorValue) {
+        const selectedProduct = {
+          id: route.query.pid,
+          name: productDetail?.name,
+          price: productDetail?.price,
+          size: sizeValue,
+          color: colorValue,
+          amount: 1,
         };
-        localStorage.setItem("cart", JSON.stringify(listProductInCart));
-        dispatch(updateCart(listProductInCart));
-        message.info("Added to cart");
+        console.log(selectedProduct);
+
+        if (localStorage.getItem("cart")) {
+          let listProductInCart = JSON.parse(
+            localStorage.getItem("cart") as any
+          );
+          const existingProductIndex = listProductInCart.findIndex(
+            (e: any) =>
+              e.id === selectedProduct.id &&
+              e.size === selectedProduct.size &&
+              e.color === selectedProduct.color
+          );
+          if (existingProductIndex !== -1) {
+            let existingProduct = listProductInCart[existingProductIndex];
+            listProductInCart[existingProductIndex] = {
+              ...existingProduct,
+              amount: existingProduct.amount + 1,
+            };
+            localStorage.setItem("cart", JSON.stringify(listProductInCart));
+            dispatch(updateCart(listProductInCart));
+            message.info("Added to cart");
+          } else {
+            listProductInCart.push(selectedProduct);
+            localStorage.setItem("cart", JSON.stringify(listProductInCart));
+            dispatch(updateCart(listProductInCart));
+            message.info("Added to cart");
+          }
+        } else {
+          const listProductInCart = [];
+          listProductInCart.push(selectedProduct);
+          localStorage.setItem("cart", JSON.stringify(listProductInCart));
+          dispatch(updateCart(listProductInCart));
+          message.info("Added to cart");
+        }
       } else {
-        listProductInCart.push(selectedProduct);
-        localStorage.setItem("cart", JSON.stringify(listProductInCart));
-        dispatch(updateCart(listProductInCart));
-        message.info("Added to cart");
+        message.info("Please select size or color");
       }
     } else {
-      const listProductInCart = [];
-      listProductInCart.push(selectedProduct);
-      localStorage.setItem("cart", JSON.stringify(listProductInCart));
-      dispatch(updateCart(listProductInCart));
-      message.info("Added to cart");
+      message.info("This product is out of stock !!");
     }
   };
 

@@ -1,5 +1,5 @@
 import React, { ReactElement, useState } from "react";
-import { Input } from "antd";
+import { Input, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "@redux/slices/api/orderSlice";
 import { useRouter } from "next/router";
@@ -15,22 +15,26 @@ export default function Index({}: Props): ReactElement {
   const [cusAddress, setCusAddress] = useState<string>();
 
   const handleCreateOrder = () => {
-    const data = {
-      name: cusName,
-      phone: cusPhone,
-      address: cusAddress,
-      productOrders: reduxCart.map((obj: any, index) => ({
-        productId: parseInt(obj.id),
-        amount: parseInt(obj.amount),
-        color: obj.color,
-        size: obj.size,
-      })),
-    };
-    dispatch(createOrder(data));
-    setCusName("");
-    setCusPhone("");
-    setCusAddress("");
-    route.push("/");
+    if (cusName && cusPhone && cusAddress) {
+      const data = {
+        name: cusName,
+        phone: cusPhone,
+        address: cusAddress,
+        productOrders: reduxCart.map((obj: any, index) => ({
+          productId: parseInt(obj.id),
+          amount: parseInt(obj.amount),
+          color: obj.color,
+          size: obj.size,
+        })),
+      };
+      dispatch(createOrder(data));
+      setCusName("");
+      setCusPhone("");
+      setCusAddress("");
+      route.push("/");
+    } else {
+      message.info("Please fill your contact information !");
+    }
   };
   return (
     <div className="w-100">
