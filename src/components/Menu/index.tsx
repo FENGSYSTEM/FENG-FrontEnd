@@ -49,7 +49,8 @@ export default function FengMenu({}: Props): ReactElement {
                 src="/img/logo/feng-logo.png"
                 className="feng-logo cursor-pointer"
               /> */}
-        <h1 className="font-bold cursor-pointer">FENG</h1>
+        {/* <h1 className="font-bold cursor-pointer">FENG</h1> */}
+        <img src="/icons/FENG.svg" className="py-3" />
       </Link>
       <div className="menu">
         <div className="item" onClick={() => setWomanExpanded(!womanExpanded)}>

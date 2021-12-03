@@ -5,6 +5,7 @@ import { updateCart } from "@redux/slices/api/orderSlice";
 import Link from "next/link";
 import { DeleteOutlined } from "@ant-design/icons";
 import { apiGetProductDetail } from "src/api/product";
+import Head from "next/head";
 
 // import { RightOutlined } from "@ant-design/icons";
 
@@ -41,6 +42,9 @@ const CartItem = ({
 
   return (
     <div className="row cart-item">
+      <Head>
+        <title>FENGSYSTEM</title>
+      </Head>
       <div className="col-3 cart-item-row d-flex align-items-center justify-content-center">
         <div className="">
           <img src={productDetail?.images[0]} height="80px" />

@@ -12,6 +12,7 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import ImageGallery from "react-image-gallery";
 import { JSDOM } from "jsdom";
 import createDOMPurify from "dompurify";
+import Head from "next/head";
 
 interface Props {}
 interface ISizeSelector {
@@ -225,6 +226,9 @@ export default function index({}: Props): ReactElement {
   );
   return (
     <div className="col-12">
+      <Head>
+        <title>FENGSYSTEM</title>
+      </Head>
       <div className="row">
         <div className="col-md-5">
           {productDetail?.images && (

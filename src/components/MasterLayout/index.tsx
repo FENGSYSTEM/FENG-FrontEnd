@@ -15,16 +15,16 @@ interface Props {
 
 export default function MasterLayout({ children }: Props): ReactElement {
   return (
-    <div className="w-100 py-5">
+    <div className="w-100">
       <div className="col-12">
         <div className="row">
           <div
-            className="d-none d-md-block col-md-3"
-            style={{ borderRight: "1px solid #EBEBEB" }}
+            className="d-none d-md-block col-md-3 py-5"
+            // style={{ borderRight: "1px solid #EBEBEB" }}
           >
             <FengMenu />
           </div>
-          <div className="col-12 col-md-9">
+          <div className="col-12 col-md-9 pt-2">
             <Header />
             <div className="mt-5 min-vh-70">{children}</div>
           </div>

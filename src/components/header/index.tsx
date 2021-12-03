@@ -133,23 +133,23 @@ export default function Header({}: Props): ReactElement {
   );
   return (
     <div className="w-100 d-flex justify-content-end">
-      <Button
+      {/* <Button
         className="d-block d-md-none mx-1 d-flex align-items-center justify-content-center"
         onClick={() => dispatch(setOpenDrawer(!openDrawer))}
       >
         <UnorderedListOutlined />
-      </Button>
-      <Input
+      </Button> */}
+      {/* <Input
         size="small"
         className="w-50 mx-1"
         placeholder="search..."
         prefix={<SearchOutlined />}
-      />
-      <Popover placement="bottom" content={filterContent} trigger="click">
+      /> */}
+      {/* <Popover placement="bottom" content={filterContent} trigger="click">
         <Button className="mx-1 d-flex align-items-center justify-content-center">
           <FilterOutlined />
         </Button>
-      </Popover>
+      </Popover> */}
       <Button className="mx-1 d-flex align-items-center justify-content-center">
         <Popover placement="bottom" content={cartContent} trigger="click">
           <Badge count={totalItemsInCart} showZero status="default">

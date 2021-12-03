@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
 
@@ -7,6 +8,9 @@ export default function Index({}: Props): ReactElement {
   const route = useRouter();
   return (
     <div className="col-12">
+      <Head>
+        <title>FENGSYSTEM</title>
+      </Head>
       <div className="row">
         <div className="col-6">
           <div className="font-bold font-55">

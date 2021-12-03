@@ -1,4 +1,5 @@
 import { getProductBySubCategory } from "@redux/slices/api/productSlice";
+import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect } from "react";
@@ -54,6 +55,9 @@ export default function Index({}: Props): ReactElement {
   };
   return (
     <div>
+      <Head>
+        <title>FENGSYSTEM</title>
+      </Head>
       <div className="col-12">
         <div className="row">
           {listProduct.products?.map((obj: any, index: number) => (
