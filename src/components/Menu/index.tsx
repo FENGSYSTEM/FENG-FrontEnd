@@ -120,7 +120,7 @@ export default function FengMenu({}: Props): ReactElement {
           </div>
         )} */}
         <div className="item">About us</div>
-        <div
+        {/* <div
           className="item"
           onClick={() => setCollectionExpanded(!collectionExpanded)}
         >
@@ -138,7 +138,7 @@ export default function FengMenu({}: Props): ReactElement {
               <div className="sub-item">SS2022</div>
             </Link>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
