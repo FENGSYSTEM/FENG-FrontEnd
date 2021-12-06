@@ -19,7 +19,7 @@ interface ISizeSelector {
   size: number;
 }
 interface IColorSelector {
-  color: string;
+  color: any;
 }
 
 // const thumbItems = (
@@ -134,23 +134,23 @@ export default function index({}: Props): ReactElement {
         className={`product-detail-selector-item`}
         style={{
           backgroundColor: hover
-            ? color
-            : colorValue === color
-            ? color
+            ? color.color_code
+            : colorValue === color.color_code
+            ? color.color_code
             : "#ffffff",
           color: hover
-            ? c_hex_is_light(color)
+            ? c_hex_is_light(color.color_code)
               ? "#000000"
               : "#ffffff"
-            : colorValue === color
-            ? c_hex_is_light(color)
+            : colorValue === color.color_code
+            ? c_hex_is_light(color.color_code)
               ? "#000000"
               : "#ffffff"
             : "#000000",
         }}
-        onClick={() => setColorValue(color)}
+        onClick={() => setColorValue(color.color_code)}
       >
-        {color}
+        {color.color_name}
       </div>
     );
   };
@@ -330,7 +330,7 @@ export default function index({}: Props): ReactElement {
                 <u>SELECT A COLOR</u>
               </h6>
               <div className="d-flex product-detail-size">
-                {productDetail?.color?.map((color: string, index: number) => (
+                {productDetail?.color?.map((color: any, index: number) => (
                   <ColorSelector color={color} />
                 ))}
                 {/* <ColorSelector color="BLACK" />

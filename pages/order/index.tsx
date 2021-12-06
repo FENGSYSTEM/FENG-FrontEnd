@@ -7,12 +7,14 @@ interface Props {}
 
 export default function Index({}: Props): ReactElement {
   const route = useRouter();
+  const { TextArea } = Input;
   const dispatch = useDispatch();
   const reduxCart = useSelector((state) => state.order.cart);
   const totalPriceInCart = useSelector((state) => state.order.totalPriceInCart);
   const [cusName, setCusName] = useState<string>();
   const [cusPhone, setCusPhone] = useState<string>();
   const [cusAddress, setCusAddress] = useState<string>();
+  const [cusNote, setCusNote] = useState<string>("");
 
   const handleCreateOrder = () => {
     if (cusName && cusPhone && cusAddress) {
@@ -20,6 +22,7 @@ export default function Index({}: Props): ReactElement {
         name: cusName,
         phone: cusPhone,
         address: cusAddress,
+        note: cusNote,
         productOrders: reduxCart.map((obj: any, index) => ({
           productId: parseInt(obj.id),
           amount: parseInt(obj.amount),
@@ -61,6 +64,14 @@ export default function Index({}: Props): ReactElement {
                 onChange={(e) => setCusAddress(e.target.value)}
                 placeholder="Your address"
               />
+              <TextArea
+                value={cusNote}
+                placeholder="Note"
+                showCount
+                maxLength={100}
+                style={{ height: 120 }}
+                onChange={(e) => setCusNote(e.target.value)}
+              />
             </div>
           </div>
           <div className="col-md-4 my-3 my-md-0">
@@ -73,8 +84,17 @@ export default function Index({}: Props): ReactElement {
                   </div>
                 </div>
                 <div className="w-100 d-flex align-items-center justify-content-between">
-                  <div className="font-10">
-                    Color:&nbsp;<span className="font-bold">{obj.color}</span>
+                  <div className="font-10 d-flex align-items-center">
+                    Color:&nbsp;
+                    <div
+                      className="mx-2"
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        background: obj.color,
+                        border: "2px solid #000",
+                      }}
+                    />
                   </div>
                   <div className="font-10">
                     Amount:&nbsp;<span className="font-bold">{obj.amount}</span>

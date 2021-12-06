@@ -12,29 +12,38 @@ import { setOpenDrawer } from "@redux/slices/counter";
 interface Props {}
 
 export default function FengMenu({}: Props): ReactElement {
+  const [preorderExpanded, setPreorderExpanded] = useState<boolean>(true);
   const [womanExpanded, setWomanExpanded] = useState<boolean>(true);
   const [manExpanded, setManExpanded] = useState<boolean>(false);
   const [collectionExpanded, setCollectionExpanded] = useState<boolean>(false);
   const [listSubCategoryWoman, setlistSubCategoryWoman] = useState<any>();
   const [listSubCategoryMan, setlistSubCategoryMan] = useState<any>();
+  const [listSubCategoryPreorder, setListSubCategoryPreorder] = useState<any>();
 
   const dispatch = useDispatch();
 
   const getSubCategory = async () => {
-    const resDataMan = await axios
-      .get(`${API_ENDPOINT}/categories/man`)
+    const resPreorder = await axios
+      .get(`${API_ENDPOINT}/categories/Pre order`)
       .then((res) => {
         // console.log(res.data);
-        setlistSubCategoryMan(res.data);
+        setListSubCategoryPreorder(res.data);
         return res.data;
       });
-    const resDataWoman = await axios
-      .get(`${API_ENDPOINT}/categories/woman`)
-      .then((res) => {
-        // console.log(res.data);
-        setlistSubCategoryWoman(res.data);
-        return res.data;
-      });
+    // const resDataMan = await axios
+    //   .get(`${API_ENDPOINT}/categories/man`)
+    //   .then((res) => {
+    //     // console.log(res.data);
+    //     setlistSubCategoryMan(res.data);
+    //     return res.data;
+    //   });
+    // const resDataWoman = await axios
+    //   .get(`${API_ENDPOINT}/categories/woman`)
+    //   .then((res) => {
+    //     // console.log(res.data);
+    //     setlistSubCategoryWoman(res.data);
+    //     return res.data;
+    //   });
     // console.log(listSubCategoryMan);
     // console.log(listSubCategoryWoman);
   };
@@ -53,7 +62,28 @@ export default function FengMenu({}: Props): ReactElement {
         <img src="/icons/FENG.svg" className="py-3" />
       </Link>
       <div className="menu">
-        <div className="item" onClick={() => setWomanExpanded(!womanExpanded)}>
+        <div
+          className="item"
+          onClick={() => setPreorderExpanded(!preorderExpanded)}
+        >
+          Pre order
+        </div>
+        {preorderExpanded && (
+          <div className="ml-3">
+            {listSubCategoryPreorder?.map((obj: any, index: number) => (
+              <Link href={`/product/preorder/${obj.url}`}>
+                <div
+                  className="sub-item"
+                  key={index}
+                  onClick={() => dispatch(setOpenDrawer(false))}
+                >
+                  {obj.name}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+        {/* <div className="item" onClick={() => setWomanExpanded(!womanExpanded)}>
           Woman
         </div>
         {womanExpanded && (
@@ -88,7 +118,7 @@ export default function FengMenu({}: Props): ReactElement {
               </Link>
             ))}
           </div>
-        )}
+        )} */}
         <div className="item">About us</div>
         <div
           className="item"

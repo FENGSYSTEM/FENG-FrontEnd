@@ -109,8 +109,17 @@ export default function Header({}: Props): ReactElement {
           <div className="cart-popup-item" key={index}>
             <div className="font-12 mt-2">{obj.name}</div>
             <div className="w-100 d-flex align-items-center justify-content-between">
-              <div className="font-10">
-                Color:&nbsp;<span className="font-bold">{obj.color}</span>
+              <div className="font-10 d-flex align-items-center">
+                Color:&nbsp;
+                <div
+                  className="mx-2"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    background: obj.color,
+                    border: "2px solid #000",
+                  }}
+                />
               </div>
               <div className="font-10">
                 Amount:&nbsp;<span className="font-bold">{obj.amount}</span>
@@ -133,12 +142,12 @@ export default function Header({}: Props): ReactElement {
   );
   return (
     <div className="w-100 d-flex justify-content-end">
-      {/* <Button
+      <Button
         className="d-block d-md-none mx-1 d-flex align-items-center justify-content-center"
         onClick={() => dispatch(setOpenDrawer(!openDrawer))}
       >
         <UnorderedListOutlined />
-      </Button> */}
+      </Button>
       {/* <Input
         size="small"
         className="w-50 mx-1"
