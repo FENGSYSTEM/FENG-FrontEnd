@@ -14,12 +14,14 @@ export default function Index({}: Props): ReactElement {
   const [cusName, setCusName] = useState<string>();
   const [cusPhone, setCusPhone] = useState<string>();
   const [cusAddress, setCusAddress] = useState<string>();
+  const [cusEmail, setCusEmail] = useState<string>();
   const [cusNote, setCusNote] = useState<string>("");
 
   const handleCreateOrder = () => {
-    if (cusName && cusPhone && cusAddress) {
+    if (cusName && cusEmail && cusPhone && cusAddress) {
       const data = {
         name: cusName,
+        email: cusEmail,
         phone: cusPhone,
         address: cusAddress,
         note: cusNote,
@@ -51,6 +53,12 @@ export default function Index({}: Props): ReactElement {
                 value={cusName}
                 onChange={(e) => setCusName(e.target.value)}
                 placeholder="Enter your name"
+              />
+              <Input
+                className="my-2"
+                value={cusEmail}
+                onChange={(e) => setCusEmail(e.target.value)}
+                placeholder="Email address"
               />
               <Input
                 className="my-2"

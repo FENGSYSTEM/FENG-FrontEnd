@@ -59,7 +59,11 @@ export default function FengMenu({}: Props): ReactElement {
                 className="feng-logo cursor-pointer"
               /> */}
         {/* <h1 className="font-bold cursor-pointer">FENG</h1> */}
-        <img src="/icons/FENG.svg" className="py-3" />
+        <img
+          src="/icons/FENG.svg"
+          className="py-3"
+          onClick={() => dispatch(setOpenDrawer(false))}
+        />
       </Link>
       <div className="menu">
         <div
@@ -119,7 +123,15 @@ export default function FengMenu({}: Props): ReactElement {
             ))}
           </div>
         )} */}
-        <div className="item">About us</div>
+        <div className="item">
+          <Link href="/about-us">About us</Link>
+        </div>
+        <div className="item">
+          <Link href="/contact">Contact</Link>
+        </div>
+        <div className="item">
+          <Link href="/frequency-questions">Q&A</Link>
+        </div>
         {/* <div
           className="item"
           onClick={() => setCollectionExpanded(!collectionExpanded)}

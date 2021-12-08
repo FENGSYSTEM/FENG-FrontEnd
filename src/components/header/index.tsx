@@ -142,12 +142,14 @@ export default function Header({}: Props): ReactElement {
   );
   return (
     <div className="w-100 d-flex justify-content-end">
-      <Button
-        className="d-block d-md-none mx-1 d-flex align-items-center justify-content-center"
+      {/* <Button className="d-block d-md-none mx-1 d-flex align-items-center justify-content-center">
+       
+      </Button> */}
+      <UnorderedListOutlined
+        className="mx-2 d-block d-md-none"
+        style={{ fontSize: "18pt", cursor: "pointer" }}
         onClick={() => dispatch(setOpenDrawer(!openDrawer))}
-      >
-        <UnorderedListOutlined />
-      </Button>
+      />
       {/* <Input
         size="small"
         className="w-50 mx-1"
@@ -159,13 +161,21 @@ export default function Header({}: Props): ReactElement {
           <FilterOutlined />
         </Button>
       </Popover> */}
-      <Button className="mx-1 d-flex align-items-center justify-content-center">
-        <Popover placement="bottom" content={cartContent} trigger="click">
-          <Badge count={totalItemsInCart} showZero status="default">
-            <ShoppingCartOutlined />
-          </Badge>
-        </Popover>
-      </Button>
+      {/* <Button className="mx-1 d-flex align-items-center justify-content-center">
+       
+      </Button> */}
+      <Popover placement="bottom" content={cartContent} trigger="click">
+        <Badge
+          className="mx-2"
+          count={totalItemsInCart}
+          showZero
+          status="default"
+        >
+          <ShoppingCartOutlined
+            style={{ fontSize: "18pt", cursor: "pointer" }}
+          />
+        </Badge>
+      </Popover>
       <Drawer
         title={() => <h1 className="font-bold cursor-pointer">FENG</h1>}
         placement="right"

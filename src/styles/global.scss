@@ -27,6 +27,12 @@ ul {
     font-size: 12pt;
   }
 }
+
+.config-content {
+  a {
+    text-decoration: underline !important;
+  }
+}
 .ant-badge-status-default {
   background: #000 !important;
 }

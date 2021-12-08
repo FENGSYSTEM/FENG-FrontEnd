@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { Table, Tag, Space, message } from "antd";
-import SizeChart from "./components/SizeChart";
+import SizeChartLogoT from "./components/SizeChartLogoT";
 import { emitWarning } from "process";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,9 @@ import ImageGallery from "react-image-gallery";
 import { JSDOM } from "jsdom";
 import createDOMPurify from "dompurify";
 import Head from "next/head";
+import SizeChartPants from "./components/SizeChartPants";
+import SizeChartTankTop from "./components/SizeChartTankTop";
+import SizeChartRugs from "./components/SizeChartRugs";
 
 interface Props {}
 interface ISizeSelector {
@@ -226,9 +229,9 @@ export default function index({}: Props): ReactElement {
   );
   return (
     <div className="col-12">
-      <Head>
-        <title>FENGSYSTEM</title>
-      </Head>
+      {/* <Head>
+        <title>{`${productDetail?.name} - `}FENGSYSTEM</title>
+      </Head> */}
       <div className="row">
         <div className="col-md-5">
           {productDetail?.images && (
@@ -348,9 +351,28 @@ export default function index({}: Props): ReactElement {
           </div>
           <br />
           <h6>
-            <u>SIZE CHART</u>
+            <u>Logo T</u>
           </h6>
-          <SizeChart />
+          <SizeChartLogoT />
+          <br />
+          <br />
+          <h6>
+            <u>Pants</u>
+          </h6>
+          <SizeChartPants />
+          <br />
+          <br />
+          <h6>
+            <u>Tank Top</u>
+          </h6>
+          <SizeChartTankTop />
+          <br />
+          <br />
+          <h6>
+            <u>Rugs</u>
+          </h6>
+          <SizeChartRugs />
+          <br />
         </div>
       </div>
     </div>
