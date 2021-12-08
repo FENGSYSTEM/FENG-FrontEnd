@@ -175,94 +175,120 @@ export default function index({ pid, detailData }: Props): ReactElement {
     }))
   );
   return (
-    <div className="col-12">
+    <>
       <Head>
         <title>{detailData.name} - FENGSYSTEM</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta
+          property="og:title"
+          content={`${detailData.name} / FENG SS22 - EMBODY`}
+        />
+        <meta
+          name="og:description"
+          content={`Discover all the collections by Feng for women, men and browse the Feng 's system and heritage`}
+        />
+        <meta
+          name="description"
+          content={`Discover all the collections by Feng for women, men and browse the Feng 's system and heritage`}
+        />
+        <meta
+          property="og:url"
+          content={`https://fengsystem.co/product/detail/${pid}/`}
+        />
+        <link
+          rel="canonical"
+          href={`https://fengsystem.co/product/detail/${pid}/`}
+        />
+        <meta property="og:image" content={detailData.images[0]} />
+        <meta property="og:type" content="article" />
+        <meta name="robots" content="index, follow" />
       </Head>
-      <div className="row">
-        <div className="col-md-5">
-          {detailData.images && (
-            <ImageGallery
-              showNav={false}
-              showPlayButton={false}
-              showFullscreenButton={false}
-              items={detailData.images.map((url: string, index: number) => ({
-                original: url,
-                thumbnail: url,
-                originalWidth: "100%",
-              }))}
-            />
-          )}
-        </div>
-        <div className="col-md-7">
-          <h4 className="">{detailData.name}</h4>
-          <h4 className="font-bold">${detailData.price}</h4>
-          <div className="my-4">
-            {wd && (
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(DescriptionHTML),
-                }}
+      <div className="col-12">
+        <div className="row">
+          <div className="col-md-5">
+            {detailData.images && (
+              <ImageGallery
+                showNav={false}
+                showPlayButton={false}
+                showFullscreenButton={false}
+                items={detailData.images.map((url: string, index: number) => ({
+                  original: url,
+                  thumbnail: url,
+                  originalWidth: "100%",
+                }))}
               />
             )}
           </div>
-          <div className="my-3">
-            <div className="my-3">
-              <h6>
-                <u>SELECT A SIZE</u>
-              </h6>
-              <div className="d-flex product-detail-size">
-                {detailData.productStocks.map((obj: any, index: number) => (
-                  <SizeSelector size={obj.size} key={`key-${index}`} />
-                ))}
-              </div>
-            </div>
-            <div className="my-3">
-              <h6>
-                <u>SELECT A COLOR</u>
-              </h6>
-              <div className="d-flex product-detail-size">
-                {detailData.color.map((color: any, index: number) => (
-                  <ColorSelector color={color} />
-                ))}
-              </div>
-            </div>
+          <div className="col-md-7">
+            <h4 className="">{detailData.name}</h4>
+            <h4 className="font-bold">${detailData.price}</h4>
             <div className="my-4">
-              <div
-                className="feng-button w-100"
-                onClick={() => handleAddToCart()}
-              >
-                ADD TO CART
+              {wd && (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(DescriptionHTML),
+                  }}
+                />
+              )}
+            </div>
+            <div className="my-3">
+              <div className="my-3">
+                <h6>
+                  <u>SELECT A SIZE</u>
+                </h6>
+                <div className="d-flex product-detail-size">
+                  {detailData.productStocks.map((obj: any, index: number) => (
+                    <SizeSelector size={obj.size} key={`key-${index}`} />
+                  ))}
+                </div>
+              </div>
+              <div className="my-3">
+                <h6>
+                  <u>SELECT A COLOR</u>
+                </h6>
+                <div className="d-flex product-detail-size">
+                  {detailData.color.map((color: any, index: number) => (
+                    <ColorSelector color={color} />
+                  ))}
+                </div>
+              </div>
+              <div className="my-4">
+                <div
+                  className="feng-button w-100"
+                  onClick={() => handleAddToCart()}
+                >
+                  ADD TO CART
+                </div>
               </div>
             </div>
+            <br />
+            <h6>
+              <u>Logo T</u>
+            </h6>
+            <SizeChartLogoT />
+            <br />
+            <br />
+            <h6>
+              <u>Pants</u>
+            </h6>
+            <SizeChartPants />
+            <br />
+            <br />
+            <h6>
+              <u>Tank Top</u>
+            </h6>
+            <SizeChartTankTop />
+            <br />
+            <br />
+            <h6>
+              <u>Rugs</u>
+            </h6>
+            <SizeChartRugs />
+            <br />
           </div>
-          <br />
-          <h6>
-            <u>Logo T</u>
-          </h6>
-          <SizeChartLogoT />
-          <br />
-          <br />
-          <h6>
-            <u>Pants</u>
-          </h6>
-          <SizeChartPants />
-          <br />
-          <br />
-          <h6>
-            <u>Tank Top</u>
-          </h6>
-          <SizeChartTankTop />
-          <br />
-          <br />
-          <h6>
-            <u>Rugs</u>
-          </h6>
-          <SizeChartRugs />
-          <br />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
