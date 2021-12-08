@@ -16,6 +16,8 @@ import Head from "next/head";
 import SizeChartPants from "./components/SizeChartPants";
 import SizeChartTankTop from "./components/SizeChartTankTop";
 import SizeChartRugs from "./components/SizeChartRugs";
+import axios from "axios";
+import { API_ENDPOINT } from "src/utils/constant/api";
 
 interface Props {}
 interface ISizeSelector {
@@ -25,29 +27,15 @@ interface IColorSelector {
   color: any;
 }
 
-// const thumbItems = (
-//   productDetail: any,
-//   [setThumbIndex, setThumbAnimation]: [
-//     setThumbIndex: any,
-//     setThumbAnimation: any
-//   ]
-// ) => {
-//   return productDetail.images?.map((img: any, i: number) => (
-//     <div
-//       className="thumb"
-//       onClick={() => (setThumbIndex(i), setThumbAnimation(true))}
-//     >
-//       <img src={img} key={`img-detail-${i}`} className="w-100" />
-//     </div>
-//   ));
-// };
+interface Props {
+  pid: string;
+  detailData: any;
+}
 
-export default function index({}: Props): ReactElement {
+export default function index({ pid, detailData }: Props): ReactElement {
   const route = useRouter();
   const dispatch = useDispatch();
 
-  // const windowJSDom = new JSDOM("").window as any;
-  // const DOMPurify = createDOMPurify(windowJSDom);
   const [DOMPurify, setDOMPurify] = useState<any>();
   const [wd, setWd] = useState<any>();
 
@@ -65,47 +53,15 @@ export default function index({}: Props): ReactElement {
     (state) => state.product.productDetail
   ) as any;
 
-  // const [mainIndex, setMainIndex] = useState(0);
-  // const [mainAnimation, setMainAnimation] = useState(false);
-  // const [thumbIndex, setThumbIndex] = useState(0);
-  // const [thumbAnimation, setThumbAnimation] = useState(false);
   const [thumbs, setThumbs] = useState<any>();
 
-  useEffect(() => {
-    console.log(route.query.pid);
-    const a = async () => {
-      await dispatch(getProductDetail(route.query.pid));
-    };
-    a();
-  }, [route.query]);
-
-  useEffect(() => {
-    // setThumbs(thumbItems(productDetail, [setThumbIndex, setThumbAnimation]));
-  }, [dispatch, productDetail]);
-
-  // const syncMainBeforeChange = (e: any) => {
-  //   setMainAnimation(true);
-  // };
-
-  // const syncMainAfterChange = (e: any) => {
-  //   setMainAnimation(false);
-
-  //   if (e.type === "action") {
-  //     setThumbIndex(e.item);
-  //     setThumbAnimation(false);
-  //   } else {
-  //     setMainIndex(thumbIndex);
-  //   }
-  // };
-
-  // const syncThumbs = (e: any) => {
-  //   setThumbIndex(e.item);
-  //   setThumbAnimation(false);
-
-  //   if (!mainAnimation) {
-  //     setMainIndex(e.item);
-  //   }
-  // };
+  // useEffect(() => {
+  //   console.log(route.query.pid);
+  //   const a = async () => {
+  //     await dispatch(getProductDetail(route.query.pid));
+  //   };
+  //   a();
+  // }, [route.query]);
 
   const SizeSelector = ({ size }: ISizeSelector) => {
     return (
@@ -159,12 +115,12 @@ export default function index({}: Props): ReactElement {
   };
 
   const handleAddToCart = () => {
-    if (productDetail?.status === "IN_STOCK") {
+    if (detailData.status === "IN_STOCK") {
       if (sizeValue && colorValue) {
         const selectedProduct = {
           id: route.query.pid,
-          name: productDetail?.name,
-          price: productDetail?.price,
+          name: detailData.name,
+          price: detailData.price,
           size: sizeValue,
           color: colorValue,
           amount: 1,
@@ -211,87 +167,36 @@ export default function index({}: Props): ReactElement {
     }
   };
 
-  // const thumbsResponsive = {
-  //   300: {
-  //     items: 5,
-  //   },
-  //   500: {
-  //     items: 5,
-  //   },
-  // };
-
-  const DescriptionHTML = productDetail?.description;
+  const DescriptionHTML = detailData.description;
   console.log(
-    productDetail?.images?.map((url: string, index: number) => ({
+    detailData.images.map((url: string, index: number) => ({
       original: url,
       thumbnail: url,
     }))
   );
   return (
     <div className="col-12">
-      {/* <Head>
-        <title>{`${productDetail?.name} - `}FENGSYSTEM</title>
-      </Head> */}
+      <Head>
+        <title>{detailData.name} - FENGSYSTEM</title>
+      </Head>
       <div className="row">
         <div className="col-md-5">
-          {productDetail?.images && (
+          {detailData.images && (
             <ImageGallery
               showNav={false}
               showPlayButton={false}
               showFullscreenButton={false}
-              items={productDetail?.images?.map(
-                (url: string, index: number) => ({
-                  original: url,
-                  thumbnail: url,
-                  originalWidth: "100%",
-                })
-              )}
+              items={detailData.images.map((url: string, index: number) => ({
+                original: url,
+                thumbnail: url,
+                originalWidth: "100%",
+              }))}
             />
           )}
-
-          {/* <AliceCarousel
-            activeIndex={mainIndex}
-            animationType="fadeout"
-            animationDuration={800}
-            disableDotsControls
-            disableButtonsControls
-            infinite
-            items={productDetail?.images?.map((img: string, index: number) => (
-              <img src={img} key={`img-detail-${index}`} className="w-100" />
-            ))}
-            mouseTracking={!thumbAnimation}
-            onSlideChange={syncMainBeforeChange}
-            onSlideChanged={syncMainAfterChange}
-            touchTracking={!thumbAnimation}
-          />
-          <div className="thumbs w-100">
-            <AliceCarousel
-              activeIndex={thumbIndex}
-              autoWidth
-              disableDotsControls
-              // disableButtonsControls
-              items={thumbs}
-              onSlideChanged={syncThumbs}
-              mouseTracking={false}
-              touchTracking={!mainAnimation}
-              // responsive={thumbsResponsive}
-            />
-           
-          </div> */}
-          {/* <img src="/img/shop/pant-black.jpeg" className="w-100" />
-          <div className="col-12 px-0 py-2">
-            <div className="row px-0">
-              {[1, 2, 3, 4, 5, 6].map((obj, index) => (
-                <div className="col-4 my-2" key={index}>
-                  <img src="/img/shop/pant-black.jpeg" className="w-100" />
-                </div>
-              ))}
-            </div>
-          </div> */}
         </div>
         <div className="col-md-7">
-          <h4 className="">{productDetail?.name}</h4>
-          <h4 className="font-bold">${productDetail?.price}</h4>
+          <h4 className="">{detailData.name}</h4>
+          <h4 className="font-bold">${detailData.price}</h4>
           <div className="my-4">
             {wd && (
               <div
@@ -300,15 +205,6 @@ export default function index({}: Props): ReactElement {
                 }}
               />
             )}
-            {/* <ul>
-              <li>Designer color: black</li>
-              <li>Styled at natural waist or at high waist</li>
-              <li>Self-belt with D-ring</li>
-              <li>Straight leg</li>
-              <li>Crease stitched at the front and back</li>
-              <li>60% Virgin wool/ 40% Viscose</li>
-              <li>Made in Italy</li>
-            </ul> */}
           </div>
           <div className="my-3">
             <div className="my-3">
@@ -316,16 +212,9 @@ export default function index({}: Props): ReactElement {
                 <u>SELECT A SIZE</u>
               </h6>
               <div className="d-flex product-detail-size">
-                {productDetail?.productStocks?.map(
-                  (obj: any, index: number) => (
-                    <SizeSelector size={obj.size} key={`key-${index}`} />
-                  )
-                )}
-                {/* <SizeSelector size={34} />
-                <SizeSelector size={36} />
-                <SizeSelector size={38} />
-                <SizeSelector size={40} />
-                <SizeSelector size={42} /> */}
+                {detailData.productStocks.map((obj: any, index: number) => (
+                  <SizeSelector size={obj.size} key={`key-${index}`} />
+                ))}
               </div>
             </div>
             <div className="my-3">
@@ -333,11 +222,9 @@ export default function index({}: Props): ReactElement {
                 <u>SELECT A COLOR</u>
               </h6>
               <div className="d-flex product-detail-size">
-                {productDetail?.color?.map((color: any, index: number) => (
+                {detailData.color.map((color: any, index: number) => (
                   <ColorSelector color={color} />
                 ))}
-                {/* <ColorSelector color="BLACK" />
-                <ColorSelector color="WHITE" /> */}
               </div>
             </div>
             <div className="my-4">
@@ -378,12 +265,14 @@ export default function index({}: Props): ReactElement {
     </div>
   );
 }
-// export async function getServerSideProps(context: any) {
-//   console.log(context.query);
-//   const { pid } = context.query;
-//   return {
-//     props: {
-//       pid,
-//     },
-//   };
-// }
+
+export async function getServerSideProps(context: any) {
+  const { pid } = context.query;
+  const res = await axios.get(`${API_ENDPOINT}/products/${pid}`);
+  return {
+    props: {
+      pid,
+      detailData: res.data,
+    }, // will be passed to the page component as props
+  };
+}

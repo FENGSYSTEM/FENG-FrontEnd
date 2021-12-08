@@ -24,7 +24,7 @@ class CustomDocument extends Document {
         {/* Style CSS */}
         <Head>
           <title>FENGSYSTEM</title>
-          <link rel="icon" href="fav-i.ico" type="image/x-icon" />
+          <link rel="icon" href="/fav-i.ico" type="image/x-icon" />
           {/* <meta property="og:image" content="thumbnails/thumbnail-bx-2.jpg" /> */}
           <meta property="og:title" content="FENG | FENG SYSTEM™" />
           <meta property="og:url" content="https://fengsystem.co/" />
