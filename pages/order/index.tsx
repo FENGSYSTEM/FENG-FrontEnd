@@ -3,6 +3,7 @@ import { Input, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "@redux/slices/api/orderSlice";
 import { useRouter } from "next/router";
+import { currencyFormatVND } from "src/utils/currencyFormat";
 interface Props {}
 
 export default function Index({}: Props): ReactElement {
@@ -88,7 +89,7 @@ export default function Index({}: Props): ReactElement {
                 <div className="font-12 mt-2 d-flex justify-content-between align-items-center my-1">
                   <div>{obj.name}</div>
                   <div className="font-normal font-10 color-gray">
-                    ${obj.amount * obj.price}
+                    {currencyFormatVND(obj.amount * obj.price)}
                   </div>
                 </div>
                 <div className="w-100 d-flex align-items-center justify-content-between">
@@ -118,7 +119,9 @@ export default function Index({}: Props): ReactElement {
               <div className="font-10">Total</div>
               <div className="font-10 color-gray">
                 USD&nbsp;
-                <span className="font-14 color-black">${totalPriceInCart}</span>
+                <span className="font-14 color-black">
+                  {currencyFormatVND(totalPriceInCart)}
+                </span>
               </div>
             </div>
             <hr />

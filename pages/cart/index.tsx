@@ -6,6 +6,8 @@ import Link from "next/link";
 import { DeleteOutlined } from "@ant-design/icons";
 import { apiGetProductDetail } from "src/api/product";
 import Head from "next/head";
+import { currencyFormatVND } from "src/utils/currencyFormat";
+import { useRouter } from "next/router";
 
 // import { RightOutlined } from "@ant-design/icons";
 
@@ -89,7 +91,7 @@ const CartItem = ({
         </div>
       </div>
       <div className="col-3 cart-item-row d-flex align-items-center justify-content-center">
-        <div>${obj.price}</div>
+        <div>{currencyFormatVND(obj.price)}</div>
         <div
           className="font-11 px-2 pb-2 cursor-pointer"
           onClick={() => {
@@ -110,10 +112,23 @@ const CartItem = ({
 };
 
 export default function Index({}: Props): ReactElement {
+  const route = useRouter();
   const reduxCart = useSelector((state) => state.order.cart);
   const totalItemsInCart = useSelector((state) => state.order.totalItemsInCart);
   const totalPriceInCart = useSelector((state) => state.order.totalPriceInCart);
 
+  const handleCheckout = () => {
+    if (reduxCart.length === 0) {
+      message.info("There are no items in your cart !");
+    } else {
+      if (totalItemsInCart) {
+        route.push("/order");
+      } else {
+        message.info("Please enter a valid amount !");
+      }
+      console.log(totalItemsInCart);
+    }
+  };
   return (
     <div className="w-100">
       <div className="col-12">
@@ -123,16 +138,20 @@ export default function Index({}: Props): ReactElement {
         ])}
       </div>
       <div className="w-100 text-right font-14">
-        TOTAL:&nbsp;<span className="font-bold">${totalPriceInCart}</span>
+        TOTAL:&nbsp;
+        <span className="font-bold">{currencyFormatVND(totalPriceInCart)}</span>
       </div>
       <div className="w-100 font-9 text-right my-2 color-gray">
         * Please note that all countries outside the EU may be subject to local
         taxes and duties. These are not included in the final price
       </div>
       <div className="w-100 d-flex justify-content-end">
-        <Link href="/order">
-          <div className="feng-button-md my-2">CHECKOUT</div>
-        </Link>
+        <div className="feng-button-md my-2" onClick={() => handleCheckout()}>
+          CHECKOUT
+        </div>
+        {/* <Link href="/order">
+          
+        </Link> */}
       </div>
     </div>
   );

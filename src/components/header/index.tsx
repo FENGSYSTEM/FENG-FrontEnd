@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
+  setOpenPopupOrder,
   updateCart,
   updateTotalItems,
   updateTotalPrice,
@@ -16,6 +17,8 @@ import {
 import Link from "next/link";
 import FengMenu from "@components/Menu";
 import { setOpenDrawer } from "@redux/slices/counter";
+import { currencyFormatVND } from "src/utils/currencyFormat";
+import { Modal } from "antd";
 
 interface Props {}
 
@@ -26,7 +29,7 @@ export default function Header({}: Props): ReactElement {
   const totalItemsInCart = useSelector((state) => state.order.totalItemsInCart);
   const totalPriceInCart = useSelector((state) => state.order.totalPriceInCart);
   const [categoryRadioState, setCategoryRadioState] = useState<boolean>(true);
-
+  const showPopupOrder = useSelector((state) => state.order.showPopupOrder);
   // const [visible, setVisible] = useState(false);
   // const showDrawer = () => {
   //   setVisible(true);
@@ -133,7 +136,8 @@ export default function Header({}: Props): ReactElement {
         ))}
       </div>
       <div className="font-12 text-left">
-        Total:&nbsp;<span className="font-bold">${totalPriceInCart}</span>
+        Total:&nbsp;
+        <span className="font-bold">{currencyFormatVND(totalPriceInCart)}</span>
       </div>
       <Link href="/cart">
         <div className="feng-button-md my-2">Purchase</div>
@@ -167,7 +171,7 @@ export default function Header({}: Props): ReactElement {
       <Popover placement="bottom" content={cartContent} trigger="click">
         <Badge
           className="mx-2"
-          count={totalItemsInCart}
+          count={totalItemsInCart ? totalItemsInCart : 0}
           showZero
           status="default"
         >
@@ -184,6 +188,42 @@ export default function Header({}: Props): ReactElement {
       >
         <FengMenu />
       </Drawer>
+      <Modal
+        visible={showPopupOrder}
+        onOk={() => {}}
+        onCancel={() => dispatch(setOpenPopupOrder(false))}
+        footer={null}
+      >
+        <p>
+          Thank you for purchasing in Feng. Your order is in processing
+          progress. Please check your information and transfer the total to one
+          of the accounts below as soon as possible to complete the buying. You
+          will receive a confirmation phone call, so please monitor your phone.
+          After that, we will email with full details and a receipt of your
+          purchase.
+        </p>
+        <p>
+          Please note that your order will only be considered successful once we
+          confirm the full payment has been received.
+        </p>
+        <p>PAYPAL</p>
+        <p>nguyentuadigan@gmail.com</p>
+        <p>
+          Cảm ơn bạn đã mua hàng ở Feng. Đơn đặt hàng của bạn đang được xử lý.
+          Vui lòng kiểm tra thông tin và chuyển tổng số tiền đơn hàng vào các số
+          tài khoản sau để hoàn tất giao dịch mua. Sau đó, bạn sẽ nhận được một
+          cuộc điện thoại xác nhận thông tin đơn hàng và xác nhận chuyển khoản,
+          vì vậy hãy theo dõi điện thoại của bạn. Khi các thủ tục trên hoàn
+          tất,chúng tôi sẽ email biên lai mua hàng của bạn.
+        </p>
+        <p>
+          Xin lưu ý, đơn hàng của bạn chỉ được coi là đặt hàng thành công một
+          khi chúng tôi xác nhận đã chuyển khoản đầy đủ.
+        </p>
+        <p>VP BANK</p>
+        <p>PHUNG THI AI NGUYEN</p>
+        <p>27322255</p>
+      </Modal>
     </div>
   );
 }

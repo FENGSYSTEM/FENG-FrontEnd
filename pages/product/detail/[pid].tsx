@@ -18,6 +18,8 @@ import SizeChartTankTop from "./components/SizeChartTankTop";
 import SizeChartRugs from "./components/SizeChartRugs";
 import axios from "axios";
 import { API_ENDPOINT } from "src/utils/constant/api";
+import { currencyFormatVND } from "src/utils/currencyFormat";
+import Link from "next/link";
 
 interface Props {}
 interface ISizeSelector {
@@ -221,7 +223,14 @@ export default function index({ pid, detailData }: Props): ReactElement {
           </div>
           <div className="col-md-7">
             <h4 className="">{detailData.name}</h4>
-            <h4 className="font-bold">${detailData.price}</h4>
+            {detailData.priceOld && (
+              <h5 className="color-gray">
+                <del>{currencyFormatVND(detailData.priceOld)}</del>
+              </h5>
+            )}
+
+            <h4 className="font-bold">{currencyFormatVND(detailData.price)}</h4>
+
             <div className="my-4">
               {wd && (
                 <div
@@ -261,7 +270,12 @@ export default function index({ pid, detailData }: Props): ReactElement {
                 </div>
               </div>
             </div>
-            <br />
+            <Link href="/frequency-questions#size-chart">
+              <h6 style={{ cursor: "pointer" }}>
+                <u>SIZE CHART</u>
+              </h6>
+            </Link>
+            {/* <br />
             <h6>
               <u>Logo T</u>
             </h6>
@@ -284,7 +298,7 @@ export default function index({ pid, detailData }: Props): ReactElement {
               <u>Rugs</u>
             </h6>
             <SizeChartRugs />
-            <br />
+            <br /> */}
           </div>
         </div>
       </div>

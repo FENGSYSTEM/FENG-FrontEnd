@@ -14,6 +14,7 @@ export const createOrder = createAsyncThunk(
 
 const initialState = {
   createOrderLoading: false,
+  showPopupOrder: false,
   cart: [],
   totalItemsInCart: 0,
   totalPriceInCart: 0,
@@ -37,6 +38,9 @@ const orderSlice = createSlice({
     updateTotalPrice: (state, { payload }) => {
       state.totalPriceInCart = payload;
     },
+    setOpenPopupOrder: (state, { payload }) => {
+      state.showPopupOrder = payload;
+    },
   },
   extraReducers: (builder) => {
     /**
@@ -51,6 +55,7 @@ const orderSlice = createSlice({
       state.cart = [];
       state.totalItemsInCart = 0;
       state.totalPriceInCart = 0;
+      state.showPopupOrder = true;
       localStorage.removeItem("cart");
     });
     builder.addCase(createOrder.rejected, (state) => {
@@ -59,6 +64,11 @@ const orderSlice = createSlice({
   },
 });
 
-export const { updateCart, emptyCart, updateTotalItems, updateTotalPrice } =
-  orderSlice.actions;
+export const {
+  updateCart,
+  emptyCart,
+  updateTotalItems,
+  updateTotalPrice,
+  setOpenPopupOrder,
+} = orderSlice.actions;
 export default orderSlice.reducer;

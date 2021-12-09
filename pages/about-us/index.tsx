@@ -44,11 +44,6 @@ export default function index({}: Props): ReactElement {
         <link rel="canonical" href="https://fengsystem.co/" />
         <meta property="og:site_name" content="fengsystem.co" />
         <meta property="og:image:alt" content="Visit fengsystem.co" />
-        <style>
-          {
-            "body { background-image: url(/img/background.png); background-repeat: no-repeat; background-size: cover }"
-          }
-        </style>
       </Head>
       {wd && (
         <div
