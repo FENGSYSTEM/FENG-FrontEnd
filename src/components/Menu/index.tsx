@@ -23,27 +23,27 @@ export default function FengMenu({}: Props): ReactElement {
   const dispatch = useDispatch();
 
   const getSubCategory = async () => {
-    const resPreorder = await axios
-      .get(`${API_ENDPOINT}/categories/Pre order`)
+    // const resPreorder = await axios
+    //   .get(`${API_ENDPOINT}/categories/Pre order`)
+    //   .then((res) => {
+    //     // console.log(res.data);
+    //     setListSubCategoryPreorder(res.data);
+    //     return res.data;
+    //   });
+    const resDataMan = await axios
+      .get(`${API_ENDPOINT}/categories/Menswear`)
       .then((res) => {
         // console.log(res.data);
-        setListSubCategoryPreorder(res.data);
+        setlistSubCategoryMan(res.data);
         return res.data;
       });
-    // const resDataMan = await axios
-    //   .get(`${API_ENDPOINT}/categories/man`)
-    //   .then((res) => {
-    //     // console.log(res.data);
-    //     setlistSubCategoryMan(res.data);
-    //     return res.data;
-    //   });
-    // const resDataWoman = await axios
-    //   .get(`${API_ENDPOINT}/categories/woman`)
-    //   .then((res) => {
-    //     // console.log(res.data);
-    //     setlistSubCategoryWoman(res.data);
-    //     return res.data;
-    //   });
+    const resDataWoman = await axios
+      .get(`${API_ENDPOINT}/categories/Womenswear`)
+      .then((res) => {
+        // console.log(res.data);
+        setlistSubCategoryWoman(res.data);
+        return res.data;
+      });
     // console.log(listSubCategoryMan);
     // console.log(listSubCategoryWoman);
   };
@@ -61,12 +61,12 @@ export default function FengMenu({}: Props): ReactElement {
         {/* <h1 className="font-bold cursor-pointer">FENG</h1> */}
         <img
           src="/icons/FENG.svg"
-          className="py-3"
+          className="py-3 cursor-pointer"
           onClick={() => dispatch(setOpenDrawer(false))}
         />
       </Link>
       <div className="menu">
-        <div
+        {/* <div
           className="item"
           onClick={() => setPreorderExpanded(!preorderExpanded)}
         >
@@ -86,9 +86,9 @@ export default function FengMenu({}: Props): ReactElement {
               </Link>
             ))}
           </div>
-        )}
-        {/* <div className="item" onClick={() => setWomanExpanded(!womanExpanded)}>
-          Woman
+        )} */}
+        <div className="item" onClick={() => setWomanExpanded(!womanExpanded)}>
+          Womanswear
         </div>
         {womanExpanded && (
           <div className="ml-3">
@@ -106,7 +106,7 @@ export default function FengMenu({}: Props): ReactElement {
           </div>
         )}
         <div className="item" onClick={() => setManExpanded(!manExpanded)}>
-          Man
+          Manswear
         </div>
         {manExpanded && (
           <div className="ml-3">
@@ -122,7 +122,7 @@ export default function FengMenu({}: Props): ReactElement {
               </Link>
             ))}
           </div>
-        )} */}
+        )}
         <div className="item">
           <Link href="/about-us">About us</Link>
         </div>

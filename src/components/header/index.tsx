@@ -17,7 +17,7 @@ import {
 import Link from "next/link";
 import FengMenu from "@components/Menu";
 import { setOpenDrawer } from "@redux/slices/counter";
-import { currencyFormatVND } from "src/utils/currencyFormat";
+import { currencyFormatUS, currencyFormatVND } from "src/utils/currencyFormat";
 import { Modal } from "antd";
 
 interface Props {}
@@ -28,7 +28,10 @@ export default function Header({}: Props): ReactElement {
   const openDrawer = useSelector((state) => state.counter.openDrawer);
   const totalItemsInCart = useSelector((state) => state.order.totalItemsInCart);
   const totalPriceInCart = useSelector((state) => state.order.totalPriceInCart);
+  const paymentMethod = useSelector((state) => state.counter.paymentMethod);
   const [categoryRadioState, setCategoryRadioState] = useState<boolean>(true);
+  const isVnPrice = useSelector((state) => state.counter.isVnPrice);
+
   const showPopupOrder = useSelector((state) => state.order.showPopupOrder);
   // const [visible, setVisible] = useState(false);
   // const showDrawer = () => {
@@ -137,7 +140,11 @@ export default function Header({}: Props): ReactElement {
       </div>
       <div className="font-12 text-left">
         Total:&nbsp;
-        <span className="font-bold">{currencyFormatVND(totalPriceInCart)}</span>
+        <span className="font-bold">
+          {isVnPrice
+            ? currencyFormatVND(totalPriceInCart)
+            : currencyFormatUS(totalPriceInCart)}
+        </span>
       </div>
       <Link href="/cart">
         <div className="feng-button-md my-2">Purchase</div>
@@ -194,35 +201,49 @@ export default function Header({}: Props): ReactElement {
         onCancel={() => dispatch(setOpenPopupOrder(false))}
         footer={null}
       >
-        <p>
-          Thank you for purchasing in Feng. Your order is in processing
-          progress. Please check your information and transfer the total to one
-          of the accounts below as soon as possible to complete the buying. You
-          will receive a confirmation phone call, so please monitor your phone.
-          After that, we will email with full details and a receipt of your
-          purchase.
-        </p>
-        <p>
-          Please note that your order will only be considered successful once we
-          confirm the full payment has been received.
-        </p>
-        <p>PAYPAL</p>
-        <p>nguyentuadigan@gmail.com</p>
-        <p>
-          Cảm ơn bạn đã mua hàng ở Feng. Đơn đặt hàng của bạn đang được xử lý.
-          Vui lòng kiểm tra thông tin và chuyển tổng số tiền đơn hàng vào các số
-          tài khoản sau để hoàn tất giao dịch mua. Sau đó, bạn sẽ nhận được một
-          cuộc điện thoại xác nhận thông tin đơn hàng và xác nhận chuyển khoản,
-          vì vậy hãy theo dõi điện thoại của bạn. Khi các thủ tục trên hoàn
-          tất,chúng tôi sẽ email biên lai mua hàng của bạn.
-        </p>
-        <p>
-          Xin lưu ý, đơn hàng của bạn chỉ được coi là đặt hàng thành công một
-          khi chúng tôi xác nhận đã chuyển khoản đầy đủ.
-        </p>
-        <p>VP BANK</p>
-        <p>PHUNG THI AI NGUYEN</p>
-        <p>27322255</p>
+        {paymentMethod === "BANKING" ? (
+          <div>
+            <p>
+              Thank you for purchasing in Feng. Your order is in processing
+              progress. Please check your information and transfer the total to
+              one of the accounts below as soon as possible to complete the
+              buying. You will receive a confirmation phone call, so please
+              monitor your phone. After that, we will email with full details
+              and a receipt of your purchase.
+            </p>
+            <p>
+              Please note that your order will only be considered successful
+              once we confirm the full payment has been received.
+            </p>
+            <p>PAYPAL</p>
+            <p>nguyentuadigan@gmail.com</p>
+            <p>
+              Cảm ơn bạn đã mua hàng ở Feng. Đơn đặt hàng của bạn đang được xử
+              lý. Vui lòng kiểm tra thông tin và chuyển tổng số tiền đơn hàng
+              vào các số tài khoản sau để hoàn tất giao dịch mua. Sau đó, bạn sẽ
+              nhận được một cuộc điện thoại xác nhận thông tin đơn hàng và xác
+              nhận chuyển khoản, vì vậy hãy theo dõi điện thoại của bạn. Khi các
+              thủ tục trên hoàn tất,chúng tôi sẽ email biên lai mua hàng của
+              bạn.
+            </p>
+            <p>
+              Xin lưu ý, đơn hàng của bạn chỉ được coi là đặt hàng thành công
+              một khi chúng tôi xác nhận đã chuyển khoản đầy đủ.
+            </p>
+            <p>VP BANK</p>
+            <p>PHUNG THI AI NGUYEN</p>
+            <p>27322255</p>
+          </div>
+        ) : (
+          <div>
+            <p>COD/ Thanh toán khi nhận hàng</p>
+            <p>
+              Cảm ơn bạn đã mua hàng tại Feng. Đơn hàng của bạn đã được hệ thống
+              ghi nhận, Feng sẽ sớm gọi điện xác nhận đơn hàng theo thứ tự và
+              phương thức thanh toán COD của bạn.
+            </p>
+          </div>
+        )}
       </Modal>
     </div>
   );

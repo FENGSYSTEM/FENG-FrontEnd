@@ -1,5 +1,6 @@
 import { getEvent } from "@redux/slices/api/eventSlice";
 import { Input } from "antd";
+import Link from "next/link";
 import React, { ReactElement, useEffect } from "react";
 import Marquee from "react-fast-marquee";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,7 +37,7 @@ export default function Footer({}: Props): ReactElement {
                   placeholder="E-MAIL ADDRESS"
                   className="w-50"
                 />
-                <div className="feng-button-sm mx-2">SUBCRIBE</div>
+                <div className="feng-button-sm mx-2">SUBSCRIBE</div>
               </div>
             </div>
             <div className="col-md-6 px-0">
@@ -45,6 +46,9 @@ export default function Footer({}: Props): ReactElement {
                 <div className="mx-2 cursor-pointer">PRESS</div>
                 <div className="mx-2 cursor-pointer">STOCKISTS</div>
                 <div className="mx-2 cursor-pointer">CUSTOMER CARE</div> */}
+                <Link href="/contact">
+                  <div className="mx-2 cursor-pointer">CONTACT</div>
+                </Link>
                 <a
                   href="https://www.instagram.com/feng.system/"
                   target="_blank"

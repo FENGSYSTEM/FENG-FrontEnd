@@ -3,7 +3,9 @@ import { Input, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "@redux/slices/api/orderSlice";
 import { useRouter } from "next/router";
-import { currencyFormatVND } from "src/utils/currencyFormat";
+import { Radio } from "antd";
+import { currencyFormatUS, currencyFormatVND } from "src/utils/currencyFormat";
+import { setPaymentMethod } from "@redux/slices/counter";
 interface Props {}
 
 export default function Index({}: Props): ReactElement {
@@ -17,9 +19,11 @@ export default function Index({}: Props): ReactElement {
   const [cusAddress, setCusAddress] = useState<string>();
   const [cusEmail, setCusEmail] = useState<string>();
   const [cusNote, setCusNote] = useState<string>("");
+  const isVnPrice = useSelector((state) => state.counter.isVnPrice);
+  const [shipType, setShipType] = useState<string>("");
 
   const handleCreateOrder = () => {
-    if (cusName && cusEmail && cusPhone && cusAddress) {
+    if (cusName && cusEmail && cusPhone && cusAddress && shipType) {
       const data = {
         name: cusName,
         email: cusEmail,
@@ -32,6 +36,7 @@ export default function Index({}: Props): ReactElement {
           color: obj.color,
           size: obj.size,
         })),
+        paymentType: shipType,
       };
       dispatch(createOrder(data));
       setCusName("");
@@ -39,9 +44,16 @@ export default function Index({}: Props): ReactElement {
       setCusAddress("");
       route.push("/");
     } else {
-      message.info("Please fill your contact information !");
+      message.info("Please fill your information !");
     }
   };
+
+  const onChangeShipType = (e: any) => {
+    // console.log("radio checked", e.target.value);
+    setShipType(e.target.value);
+    dispatch(setPaymentMethod(e.target.value));
+  };
+
   return (
     <div className="w-100">
       <div className="col-12">
@@ -73,6 +85,13 @@ export default function Index({}: Props): ReactElement {
                 onChange={(e) => setCusAddress(e.target.value)}
                 placeholder="Your address"
               />
+              <div className="my-2 d-flex align-items-center">
+                <div className="mr-3">Payment method:</div>
+                <Radio.Group onChange={onChangeShipType} value={shipType}>
+                  <Radio value={"COD"}>COD</Radio>
+                  <Radio value={"BANKING"}>Internet Banking</Radio>
+                </Radio.Group>
+              </div>
               <TextArea
                 value={cusNote}
                 placeholder="Note"
@@ -89,7 +108,9 @@ export default function Index({}: Props): ReactElement {
                 <div className="font-12 mt-2 d-flex justify-content-between align-items-center my-1">
                   <div>{obj.name}</div>
                   <div className="font-normal font-10 color-gray">
-                    {currencyFormatVND(obj.amount * obj.price)}
+                    {isVnPrice
+                      ? currencyFormatVND(obj.amount * obj.price)
+                      : currencyFormatUS(obj.amount * obj.price)}
                   </div>
                 </div>
                 <div className="w-100 d-flex align-items-center justify-content-between">
@@ -118,9 +139,11 @@ export default function Index({}: Props): ReactElement {
             <div className="d-flex justify-content-between align-items-center">
               <div className="font-10">Total</div>
               <div className="font-10 color-gray">
-                USD&nbsp;
+                {/* USD&nbsp; */}
                 <span className="font-14 color-black">
-                  {currencyFormatVND(totalPriceInCart)}
+                  {isVnPrice
+                    ? currencyFormatVND(totalPriceInCart)
+                    : currencyFormatUS(totalPriceInCart)}
                 </span>
               </div>
             </div>

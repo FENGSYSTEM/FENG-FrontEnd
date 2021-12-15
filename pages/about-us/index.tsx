@@ -1,6 +1,8 @@
 import { getConfigs } from "@redux/slices/api/configContentSlice";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ImageGallery from "react-image-gallery";
+
 import createDOMPurify from "dompurify";
 import Head from "next/head";
 
@@ -24,6 +26,29 @@ export default function index({}: Props): ReactElement {
   }, []);
 
   const DescriptionHTML = configData?.aboutUs;
+
+  const imagesAboutUs = [
+    {
+      original: "/img/about-us/1n.jpg",
+      thumbnail: "/img/about-us/1n.jpg",
+      originalWidth: "100%",
+    },
+    {
+      original: "/img/about-us/2n.jpg",
+      thumbnail: "/img/about-us/2n.jpg",
+      originalWidth: "100%",
+    },
+    {
+      original: "/img/about-us/3.jpg",
+      thumbnail: "/img/about-us/3.jpg",
+      originalWidth: "100%",
+    },
+    {
+      original: "/img/about-us/3n.jpg",
+      thumbnail: "/img/about-us/3n.jpg",
+      originalWidth: "100%",
+    },
+  ];
   return (
     <div>
       <Head>
@@ -45,13 +70,24 @@ export default function index({}: Props): ReactElement {
         <meta property="og:site_name" content="fengsystem.co" />
         <meta property="og:image:alt" content="Visit fengsystem.co" />
       </Head>
-      {wd && (
-        <div
-          dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(DescriptionHTML),
-          }}
-        />
-      )}
+      <div className="col-12">
+        <div className="row">
+          <div className="col-md-6">
+            {wd && (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(DescriptionHTML),
+                }}
+              />
+            )}
+          </div>
+          <div className="col-md-6">
+            {imagesAboutUs.map((obj, index) => (
+              <img className="w-100" src={obj.original} />
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

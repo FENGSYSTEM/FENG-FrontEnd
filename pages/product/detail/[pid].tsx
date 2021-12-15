@@ -18,8 +18,9 @@ import SizeChartTankTop from "./components/SizeChartTankTop";
 import SizeChartRugs from "./components/SizeChartRugs";
 import axios from "axios";
 import { API_ENDPOINT } from "src/utils/constant/api";
-import { currencyFormatVND } from "src/utils/currencyFormat";
+import { currencyFormatUS, currencyFormatVND } from "src/utils/currencyFormat";
 import Link from "next/link";
+import { setIsVnPrice } from "@redux/slices/counter";
 
 interface Props {}
 interface ISizeSelector {
@@ -39,6 +40,10 @@ export default function index({ pid, detailData }: Props): ReactElement {
   const dispatch = useDispatch();
 
   const [DOMPurify, setDOMPurify] = useState<any>();
+  // const [isVnPrice, setIsVnPrice] = useState<boolean>(true);
+  const isVnPrice = useSelector((state) => state.counter.isVnPrice);
+  const totalItemsInCart = useSelector((state) => state.order.totalItemsInCart);
+
   const [wd, setWd] = useState<any>();
 
   useEffect(() => {
@@ -108,6 +113,10 @@ export default function index({ pid, detailData }: Props): ReactElement {
               ? "#000000"
               : "#ffffff"
             : "#000000",
+          border:
+            colorValue === color.color_code
+              ? "3px solid #000"
+              : "1px solid #000",
         }}
         onClick={() => setColorValue(color.color_code)}
       >
@@ -118,11 +127,12 @@ export default function index({ pid, detailData }: Props): ReactElement {
 
   const handleAddToCart = () => {
     if (detailData.status === "IN_STOCK") {
+      localStorage.setItem("priceType", isVnPrice ? "vn" : "us");
       if (sizeValue && colorValue) {
         const selectedProduct = {
           id: route.query.pid,
           name: detailData.name,
-          price: detailData.price,
+          price: isVnPrice ? detailData.price : detailData.priceUS,
           size: sizeValue,
           color: colorValue,
           amount: 1,
@@ -166,6 +176,22 @@ export default function index({ pid, detailData }: Props): ReactElement {
       }
     } else {
       message.info("This product is out of stock !!");
+    }
+  };
+
+  // useEffect(() => {
+  //   localStorage.setItem("priceType", isVnPrice ? "vn" : "us");
+  // }, [isVnPrice]);
+
+  const handleSwitchPrice = () => {
+    // setIsVnPrice(!isVnPrice);
+    console.log(totalItemsInCart);
+    if (totalItemsInCart === 0) {
+      dispatch(setIsVnPrice(!isVnPrice));
+    } else {
+      message.info(
+        "Please remove all items in your cart before switch price type"
+      );
     }
   };
 
@@ -223,14 +249,32 @@ export default function index({ pid, detailData }: Props): ReactElement {
           </div>
           <div className="col-md-7">
             <h4 className="">{detailData.name}</h4>
-            {detailData.priceOld && (
-              <h5 className="color-gray">
-                <del>{currencyFormatVND(detailData.priceOld)}</del>
-              </h5>
+            {isVnPrice ? (
+              <div>
+                {detailData.priceOld !== 0 && (
+                  <h5 className="color-gray">
+                    <del>{currencyFormatVND(detailData.priceOld)}</del>
+                  </h5>
+                )}
+                <h4 className="font-bold">
+                  {currencyFormatVND(detailData.price)}
+                </h4>
+              </div>
+            ) : (
+              <div>
+                {detailData.priceOld !== 0 && (
+                  <h5 className="color-gray">
+                    <del>{currencyFormatUS(detailData.priceUSOld)}</del>
+                  </h5>
+                )}
+                <h4 className="font-bold">
+                  {currencyFormatUS(detailData.priceUS)}
+                </h4>
+              </div>
             )}
-
-            <h4 className="font-bold">{currencyFormatVND(detailData.price)}</h4>
-
+            <div onClick={() => handleSwitchPrice()} className="cursor-pointer">
+              switch to {isVnPrice ? "USD" : "VND"}
+            </div>
             <div className="my-4">
               {wd && (
                 <div
@@ -275,30 +319,6 @@ export default function index({ pid, detailData }: Props): ReactElement {
                 <u>SIZE CHART</u>
               </h6>
             </Link>
-            {/* <br />
-            <h6>
-              <u>Logo T</u>
-            </h6>
-            <SizeChartLogoT />
-            <br />
-            <br />
-            <h6>
-              <u>Pants</u>
-            </h6>
-            <SizeChartPants />
-            <br />
-            <br />
-            <h6>
-              <u>Tank Top</u>
-            </h6>
-            <SizeChartTankTop />
-            <br />
-            <br />
-            <h6>
-              <u>Rugs</u>
-            </h6>
-            <SizeChartRugs />
-            <br /> */}
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { DeleteOutlined } from "@ant-design/icons";
 import { apiGetProductDetail } from "src/api/product";
 import Head from "next/head";
-import { currencyFormatVND } from "src/utils/currencyFormat";
+import { currencyFormatUS, currencyFormatVND } from "src/utils/currencyFormat";
 import { useRouter } from "next/router";
 
 // import { RightOutlined } from "@ant-design/icons";
@@ -26,6 +26,8 @@ const CartItem = ({
   // const reduxCart = useSelector((state) => state.order.cart);
 
   const [itemAmountValue, setAmountValue] = useState<number>(obj.amount);
+  const isVnPrice = useSelector((state) => state.counter.isVnPrice);
+
   // const [reduxCartClone, setReduxCartClone] = useState<[]>(reduxCart);
   let reduxCartClone = [...reduxCart] as any;
   // console.log(reduxCartClone);
@@ -91,7 +93,11 @@ const CartItem = ({
         </div>
       </div>
       <div className="col-3 cart-item-row d-flex align-items-center justify-content-center">
-        <div>{currencyFormatVND(obj.price)}</div>
+        <div>
+          {isVnPrice
+            ? currencyFormatVND(obj.price)
+            : currencyFormatUS(obj.price)}
+        </div>
         <div
           className="font-11 px-2 pb-2 cursor-pointer"
           onClick={() => {
@@ -117,6 +123,8 @@ export default function Index({}: Props): ReactElement {
   const totalItemsInCart = useSelector((state) => state.order.totalItemsInCart);
   const totalPriceInCart = useSelector((state) => state.order.totalPriceInCart);
 
+  const isVnPrice = useSelector((state) => state.counter.isVnPrice);
+
   const handleCheckout = () => {
     if (reduxCart.length === 0) {
       message.info("There are no items in your cart !");
@@ -139,7 +147,11 @@ export default function Index({}: Props): ReactElement {
       </div>
       <div className="w-100 text-right font-14">
         TOTAL:&nbsp;
-        <span className="font-bold">{currencyFormatVND(totalPriceInCart)}</span>
+        <span className="font-bold">
+          {isVnPrice
+            ? currencyFormatVND(totalPriceInCart)
+            : currencyFormatUS(totalPriceInCart)}
+        </span>
       </div>
       <div className="w-100 font-9 text-right my-2 color-gray">
         * Please note that all countries outside the EU may be subject to local
