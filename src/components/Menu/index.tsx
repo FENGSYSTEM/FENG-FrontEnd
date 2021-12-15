@@ -15,9 +15,14 @@ export default function FengMenu({}: Props): ReactElement {
   const [preorderExpanded, setPreorderExpanded] = useState<boolean>(true);
   const [womanExpanded, setWomanExpanded] = useState<boolean>(true);
   const [manExpanded, setManExpanded] = useState<boolean>(false);
+  const [homeDecorExpanded, setHomeDecorExpanded] = useState<boolean>(false);
+
   const [collectionExpanded, setCollectionExpanded] = useState<boolean>(false);
   const [listSubCategoryWoman, setlistSubCategoryWoman] = useState<any>();
   const [listSubCategoryMan, setlistSubCategoryMan] = useState<any>();
+  const [listSubCategoryHomeDecor, setlistSubCategoryHomeDecor] =
+    useState<any>();
+
   const [listSubCategoryPreorder, setListSubCategoryPreorder] = useState<any>();
 
   const dispatch = useDispatch();
@@ -42,6 +47,13 @@ export default function FengMenu({}: Props): ReactElement {
       .then((res) => {
         // console.log(res.data);
         setlistSubCategoryWoman(res.data);
+        return res.data;
+      });
+    const resDataHomeDecor = await axios
+      .get(`${API_ENDPOINT}/categories/Home decor`)
+      .then((res) => {
+        // console.log(res.data);
+        setlistSubCategoryHomeDecor(res.data);
         return res.data;
       });
     // console.log(listSubCategoryMan);
@@ -88,12 +100,12 @@ export default function FengMenu({}: Props): ReactElement {
           </div>
         )} */}
         <div className="item" onClick={() => setWomanExpanded(!womanExpanded)}>
-          Womanswear
+          Womenswear
         </div>
         {womanExpanded && (
           <div className="ml-3">
             {listSubCategoryWoman?.map((obj: any, index: number) => (
-              <Link href={`/product/woman/${obj.url}`}>
+              <Link href={`/product/womenswear/${obj.url}`}>
                 <div
                   className="sub-item"
                   key={index}
@@ -106,12 +118,33 @@ export default function FengMenu({}: Props): ReactElement {
           </div>
         )}
         <div className="item" onClick={() => setManExpanded(!manExpanded)}>
-          Manswear
+          Menswear
         </div>
         {manExpanded && (
           <div className="ml-3">
             {listSubCategoryMan?.map((obj: any, index: number) => (
-              <Link href={`/product/man/${obj.url}`}>
+              <Link href={`/product/menswear/${obj.url}`}>
+                <div
+                  className="sub-item"
+                  key={index}
+                  onClick={() => dispatch(setOpenDrawer(false))}
+                >
+                  {obj.name}
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
+        <div
+          className="item"
+          onClick={() => setHomeDecorExpanded(!homeDecorExpanded)}
+        >
+          Home Décor
+        </div>
+        {homeDecorExpanded && (
+          <div className="ml-3">
+            {listSubCategoryHomeDecor?.map((obj: any, index: number) => (
+              <Link href={`/product/home-decor/${obj.url}`}>
                 <div
                   className="sub-item"
                   key={index}
