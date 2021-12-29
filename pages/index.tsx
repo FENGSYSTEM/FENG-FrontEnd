@@ -24,7 +24,7 @@ const Home: React.FC = () => {
         <meta property="og:image:alt" content="Visit fengsystem.co" />
         <style>
           {
-            "body { background-image: url(/img/111.jpg); background-repeat: no-repeat; background-size: cover }"
+            "body { background-image: url(/img/background-111.jpg); background-repeat: no-repeat; background-size: cover }"
           }
         </style>
       </Head>
