@@ -36,12 +36,12 @@ export default function MasterLayout({ children }: Props): ReactElement {
   }, []);
   return (
     <>
-      <div
+      {/* <div
         className="splash"
         hidden={!isOpenSplash}
         onClick={() => setOpenSplash(false)}
         style={{ backgroundImage: `url(${configsData?.image})` }}
-      ></div>
+      ></div> */}
       <div className="w-100 py-5">
         <div className="col-12">
           <div className="row">
